@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Global Vault | Tesla Investment</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#06111d;
+    color:#fff;
+    min-height:100vh;
+}
+
+header{
+    height:70px;
+    background:#050b12;
+    border-bottom:1px solid rgba(216,137,24,.18);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 20px;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.menu-icon{
+    font-size:28px;
+    color:#ffc857;
+    cursor:pointer;
+}
+
+.logo{
+    font-size:19px;
+    font-weight:800;
+    letter-spacing:1px;
+}
+
+.logo span{
+    color:#ffc857;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.bell{
+    position:relative;
+    font-size:20px;
+}
+
+.bell-dot{
+    position:absolute;
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#d88918;
+    right:-2px;
+    top:0;
+}
+
+.profile{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#d88918;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    position:fixed;
+    left:-285px;
+    top:0;
+    width:285px;
+    height:100vh;
+    background:#050b12;
+    border-right:1px solid rgba(216,137,24,.25);
+    z-index:300;
+    padding:25px 20px;
+    transition:.3s;
+}
+
+.sidebar.active{
+    left:0;
+}
+
+.close-menu{
+    position:absolute;
+    right:20px;
+    top:18px;
+    color:#ffc857;
+    font-size:28px;
+    cursor:pointer;
+}
+
+.side-logo{
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:35px;
+}
+
+.side-logo span{
+    color:#ffc857;
+}
+
+.sidebar a{
+    display:block;
+    padding:15px 8px;
+    color:#dfe5ea;
+    text-decoration:none;
+    border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.sidebar a:hover{
+    color:#ffc857;
+}
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    z-index:250;
+    display:none;
+}
+
+.overlay.active{
+    display:block;
+}
+
+/* MAIN */
+
+.container{
+    max-width:950px;
+    margin:auto;
+    padding:35px 17px 100px;
+}
+
+.hero{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.hero-tag{
+    display:inline-block;
+    border:1px solid #d88918;
+    color:#ffc857;
+    border-radius:25px;
+    padding:8px 16px;
+    font-size:11px;
+    margin-bottom:18px;
+    box-shadow:0 0 15px rgba(216,137,24,.2);
+}
+
+.hero h1{
+    font-size:32px;
+    line-height:1.2;
+    margin-bottom:13px;
+}
+
+.hero h1 span{
+    color:#ffc857;
+}
+
+.hero p{
+    color:#aab4bf;
+    font-size:14px;
+    line-height:1.6;
+    max-width:680px;
+    margin:auto;
+}
+
+/* MARKET */
+
+.market-card{
+    background:#050b12;
+    border:1px solid rgba(216,137,24,.2);
+    border-radius:18px;
+    padding:25px;
+    box-shadow:
+        0 0 25px rgba(216,137,24,.04),
+        inset 0 0 30px rgba(216,137,24,.02);
+}
+
+.market-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+}
+
+.ticker{
+    color:#9ca6b1;
+    font-size:13px;
+    margin-bottom:8px;
+}
+
+.market-price{
+    font-size:44px;
+    font-weight:800;
+    transition:.25s;
+}
+
+.market-change{
+    color:#ffc857;
+    font-size:14px;
+    margin-top:6px;
+}
+
+.market-status{
+    border:1px solid rgba(216,137,24,.4);
+    color:#ffc857;
+    border-radius:20px;
+    padding:7px 12px;
+    font-size:10px;
+}
+
+.market-note{
+    color:#687582;
+    font-size:9px;
+    margin-top:7px;
+}
+
+/* CHART */
+
+.chart{
+    height:230px;
+    margin-top:25px;
+    border:1px solid rgba(216,137,24,.09);
+    border-radius:13px;
+    overflow:hidden;
+
+    background:
+        linear-gradient(rgba(216,137,24,.055) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(216,137,24,.055) 1px,transparent 1px);
+
+    background-size:55px 45px;
+}
+
+.chart svg{
+    width:100%;
+    height:100%;
+}
+
+.chart-line{
+    fill:none;
+    stroke:#ffc857;
+    stroke-width:3;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    filter:drop-shadow(0 0 5px rgba(255,200,87,.45));
+}
+
+.chart-area{
+    fill:rgba(216,137,24,.08);
+}
+
+/* SECTIONS */
+
+.section{
+    margin-top:38px;
+}
+
+.section-title{
+    font-size:21px;
+    margin-bottom:18px;
+}
+
+/* PORTFOLIO */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:13px;
+}
+
+.stat{
+    background:#050b12;
+    border:1px solid rgba(216,137,24,.11);
+    border-radius:14px;
+    padding:20px 15px;
+}
+
+.stat-label{
+    color:#8e99a4;
+    font-size:11px;
+    margin-bottom:9px;
+}
+
+.stat-value{
+    font-size:19px;
+    font-weight:bold;
+}
+
+.gold{
+    color:#ffc857;
+}
+
+/* ANALYST */
+
+.analyst-card{
+    background:#050b12;
+    border:1px solid rgba(216,137,24,.12);
+    border-radius:16px;
+    padding:22px;
+}
+
+.consensus{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-bottom:20px;
+    border-bottom:1px solid rgba(255,255,255,.06);
+    margin-bottom:5px;
+}
+
+.consensus small{
+    display:block;
+    color:#8e99a4;
+    margin-bottom:7px;
+}
+
+.consensus strong{
+    font-size:28px;
+}
+
+.analyst-row{
+    display:grid;
+    grid-template-columns:1fr 1fr 90px;
+    gap:10px;
+    padding:14px 0;
+    border-bottom:1px solid rgba(255,255,255,.05);
+    font-size:13px;
+}
+
+.analyst-rating{
+    color:#ffc857;
+}
+
+.analyst-target{
+    color:#aeb8c3;
+    text-align:right;
+}
+
+/* FINANCIALS */
+
+.financial-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:13px;
+}
+
+.financial{
+    background:#050b12;
+    border:1px solid rgba(216,137,24,.1);
+    border-radius:14px;
+    padding:20px;
+}
+
+.financial span{
+    display:block;
+    color:#8e99a4;
+    font-size:11px;
+    margin-bottom:8px;
+}
+
+.financial strong{
+    font-size:19px;
+}
+
+/* VEHICLES */
+
+.vehicle-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+}
+
+.vehicle{
+    background:#050b12;
+    border:1px solid rgba(216,137,24,.1);
+    border-radius:15px;
+    padding:20px;
+}
+
+.vehicle h3{
+    font-size:17px;
+    margin-bottom:8px;
+}
+
+.vehicle-price{
+    color:#ffc857;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.vehicle p{
+    color:#9da8b3;
+    font-size:13px;
+    line-height:1.5;
+}
+
+/* ENERGY */
+
+.energy-card,
+.ecosystem-card,
+.innovation-card,
+.news-item{
+    background:#050b12;
+    border:1px solid rgba(216,137,24,.1);
+    border-radius:15px;
+    padding:20px;
+    margin-bottom:12px;
+}
+
+.energy-card h3,
+.ecosystem-card h3{
+    color:#ffc857;
+    margin-bottom:8px;
+}
+
+.energy-card p,
+.ecosystem-card p,
+.innovation-card p{
+    color:#9da8b3;
+    font-size:13px;
+    line-height:1.55;
+}
+
+.ecosystem-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:13px;
+}
+
+.innovation-card{
+    border-left:3px solid #d88918;
+}
+
+/* TESLA STATS */
+
+.tesla-stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:13px;
+}
+
+.tesla-stat{
+    background:#050b12;
+    border:1px solid rgba(216,137,24,.1);
+    border-radius:15px;
+    text-align:center;
+    padding:22px;
+}
+
+.tesla-stat strong{
+    display:block;
+    color:#ffc857;
+    font-size:26px;
+    margin-bottom:7px;
+}
+
+.tesla-stat span{
+    color:#8e99a4;
+    font-size:11px;
+}
+
+/* INVESTMENT */
+
+.investment-card{
+    background:#050b12;
+    border:1px solid #d88918;
+    border-radius:18px;
+    padding:27px;
+    box-shadow:
+        0 0 15px rgba(216,137,24,.15),
+        inset 0 0 30px rgba(216,137,24,.02);
+}
+
+.investment-card h2{
+    margin-bottom:9px;
+}
+
+.investment-card > p{
+    color:#9da8b3;
+    font-size:13px;
+    line-height:1.6;
+    margin-bottom:22px;
+}
+
+.form-group{
+    margin-bottom:17px;
+}
+
+.form-group label{
+    display:block;
+    color:#cbd1d7;
+    font-size:12px;
+    margin-bottom:8px;
+}
+
+.form-group input,
+.form-group select{
+    width:100%;
+    padding:14px;
+    background:#06111d;
+    color:white;
+    border:1px solid rgba(216,137,24,.18);
+    border-radius:8px;
+    outline:none;
+}
+
+.request-button{
+    width:100%;
+    border:0;
+    border-radius:8px;
+    padding:14px;
+    background:#d88918;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.request-button:hover{
+    background:#ffc857;
+    color:#06111d;
+}
+
+/* POSITIONS */
+
+.empty-box{
+    background:#050b12;
+    border:1px solid rgba(216,137,24,.1);
+    border-radius:15px;
+    padding:30px;
+    text-align:center;
+    color:#8e99a4;
+}
+
+/* NEWS */
+
+.news-item h3{
+    font-size:14px;
+    margin-bottom:7px;
+}
+
+.news-meta{
+    color:#7f8b96;
+    font-size:11px;
+}
+
+/* FLOATING CHAT */
+
+.chat-button{
+    position:fixed;
+    right:22px;
+    bottom:22px;
+    width:62px;
+    height:62px;
+    border-radius:50%;
+    background:#d88918;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:27px;
+    cursor:pointer;
+    z-index:500;
+
+    box-shadow:
+        0 0 12px rgba(216,137,24,.75),
+        0 0 30px rgba(216,137,24,.35);
+
+    animation:chatFloat 2s ease-in-out infinite;
+}
+
+@keyframes chatFloat{
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-9px);
+    }
+
+}
+
+.chat-window{
+    position:fixed;
+    right:22px;
+    bottom:98px;
+    width:335px;
+    max-width:calc(100vw - 28px);
+    height:450px;
+    background:#050b12;
+    border:1px solid #d88918;
+    border-radius:17px;
+    z-index:499;
+    display:none;
+    flex-direction:column;
+    overflow:hidden;
+    box-shadow:0 0 35px rgba(0,0,0,.6);
+}
+
+.chat-window.active{
+    display:flex;
+}
+
+.chat-header{
+    background:#d88918;
+    padding:16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.chat-header strong{
+    font-size:14px;
+}
+
+.chat-close{
+    font-size:22px;
+    cursor:pointer;
+}
+
+.chat-messages{
+    flex:1;
+    padding:15px;
+    overflow-y:auto;
+}
+
+.chat-message{
+    max-width:82%;
+    padding:10px 12px;
+    border-radius:11px;
+    margin-bottom:10px;
+    font-size:13px;
+    line-height:1.4;
+}
+
+.chat-message.support{
+    background:#101c28;
+    color:#dce3e8;
+}
+
+.chat-message.user{
+    background:#d88918;
+    margin-left:auto;
+}
+
+.chat-input-area{
+    display:flex;
+    padding:10px;
+    border-top:1px solid rgba(255,255,255,.08);
+    gap:7px;
+}
+
+.chat-input{
+    flex:1;
+    background:#06111d;
+    color:white;
+    border:1px solid rgba(216,137,24,.2);
+    border-radius:8px;
+    padding:11px;
+    outline:none;
+}
+
+.chat-send{
+    width:45px;
+    border:0;
+    border-radius:8px;
+    background:#d88918;
+    color:white;
+    cursor:pointer;
+}
+
+/* FOOTER */
+
+footer{
+    text-align:center;
+    color:#687582;
+    font-size:11px;
+    padding:35px 15px;
+    border-top:1px solid rgba(216,137,24,.08);
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+    .hero h1{
+        font-size:27px;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .financial-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .vehicle-grid,
+    .ecosystem-grid{
+        grid-template-columns:1fr;
+    }
+
+    .tesla-stats{
+        grid-template-columns:1fr;
+    }
+
+    .market-price{
+        font-size:35px;
+    }
+
+}
+
+@media(max-width:430px){
+
+    .container{
+        padding-left:13px;
+        padding-right:13px;
+    }
+
+    .market-top{
+        gap:10px;
+    }
+
+    .market-status{
+        font-size:8px;
+        padding:6px 8px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar" id="sidebar">
+
+    <div class="close-menu" onclick="closeMenu()">×</div>
+
+    <div class="side-logo">
+        GLOBAL <span>VAULT</span>
+    </div>
+
+    <a href="dashboard.html">Dashboard</a>
+    <a href="trading.html">Trading Center</a>
+    <a href="tesla.html">Tesla Investment</a>
+    <a href="index.html">Homepage</a>
+
+</div>
+
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+
+<!-- HEADER -->
+
+<header>
+
+    <div class="menu-icon" onclick="openMenu()">☰</div>
+
+    <div class="logo">
+        GLOBAL <span>VAULT</span>
+    </div>
+
+    <div class="header-right">
+
+        <div class="bell">
+            🔔
+            <span class="bell-dot"></span>
+        </div>
+
+        <div class="profile">
+            G
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- MAIN -->
+
+<main class="container">
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-tag">
+            TESLA INVESTMENT CENTER
+        </div>
+
+        <h1>
+            TESLA <span>INVESTMENT</span> DASHBOARD
+        </h1>
+
+        <p>
+            Invest in the future of electric mobility & energy.
+            Track Tesla market information, explore innovations,
+            and review portfolio opportunities.
+        </p>
+
+    </section>
+
+
+    <!-- TESLA MARKET -->
+
+    <section class="market-card">
+
+        <div class="market-top">
+
+            <div>
+
+                <div class="ticker">
+                    TSLA • Tesla Inc.
+                </div>
+
+                <div
+                    class="market-price"
+                    id="tslaPrice"
+                >
+                    $250.19
+                </div>
+
+                <div
+                    class="market-change"
+                    id="tslaChange"
+                >
+                    +1.69 (0.68%)
+                </div>
+
+                <div class="market-note">
+                    Illustrative market data
+                </div>
+
+            </div>
+
+            <div class="market-status">
+                MARKET INFORMATION
+            </div>
+
+        </div>
+
+
+        <div class="chart">
+
+            <svg
+                viewBox="0 0 900 230"
+                preserveAspectRatio="none"
+            >
+
+                <path
+                    id="chartArea"
+                    class="chart-area"
+                ></path>
+
+                <path
+                    id="chartLine"
+                    class="chart-line"
+                ></path>
+
+            </svg>
+
+        </div>
+
+    </section>
+
+
+    <!-- PORTFOLIO -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            Tesla Portfolio
+        </h2>
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Invested in TSLA
+                </div>
+
+                <div class="stat-value">
+                    $0.00
+                </div>
+
+            </div>
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Realized P&L
+                </div>
+
+                <div class="stat-value gold">
+                    +$0.00
+                </div>
+
+            </div>
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Unrealized P&L
+                </div>
+
+                <div class="stat-value gold">
+                    +$0.00
+                </div>
+
+            </div>
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Open / Closed
+                </div>
+
+                <div class="stat-value">
+                    0 / 0
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ANALYST RATINGS -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            Wall Street Analyst Ratings
+        </h2>
+
+        <div class="analyst-card">
+
+            <div class="consensus">
+
+                <div>
+
+                    <small>
+                        Reference consensus target
+                    </small>
+
+                    <strong>
+                        $297.00
+                    </strong>
+
+                </div>
+
+                <div class="gold">
+                    +18.7%
+                </div>
+
+            </div>
+
+            <div class="analyst-row">
+                <div>Morgan Stanley</div>
+                <div class="analyst-rating">Overweight</div>
+                <div class="analyst-target">$310</div>
+            </div>
+
+            <div class="analyst-row">
+                <div>Wedbush</div>
+                <div class="analyst-rating">Outperform</div>
+                <div class="analyst-target">$400</div>
+            </div>
+
+            <div class="analyst-row">
+                <div>Goldman Sachs</div>
+                <div class="analyst-rating">Neutral</div>
+                <div class="analyst-target">$275</div>
+            </div>
+
+            <div class="analyst-row">
+                <div>JP Morgan</div>
+                <div class="analyst-rating">Underweight</div>
+                <div class="analyst-target">$135</div>
+            </div>
+
+            <div class="analyst-row">
+                <div>Cantor Fitzgerald</div>
+                <div class="analyst-rating">Overweight</div>
+                <div class="analyst-target">$365</div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FINANCIALS -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            Key Financials
+        </h2>
+
+        <div class="financial-grid">
+
+            <div class="financial">
+                <span>P/E Ratio</span>
+                <strong>72.4</strong>
+            </div>
+
+            <div class="financial">
+                <span>EPS (TTM)</span>
+                <strong>$3.43</strong>
+            </div>
+
+            <div class="financial">
+                <span>Beta</span>
+                <strong>2.31</strong>
+            </div>
+
+            <div class="financial">
+                <span>52W High</span>
+                <strong>$299.29</strong>
+            </div>
+
+            <div class="financial">
+                <span>52W Low</span>
+                <strong>$138.80</strong>
+            </div>
+
+            <div class="financial">
+                <span>Avg Volume</span>
+                <strong>98.2M</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- VEHICLES -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            Tesla Vehicle Lineup
+        </h2>
+
+        <div class="vehicle-grid">
+
+            <div class="vehicle">
+                <h3>Model S Plaid</h3>
+                <div class="vehicle-price">$94,990</div>
+                <p>1,020 hp • 0–60 mph in approximately 1.99 seconds.</p>
+            </div>
+
+            <div class="vehicle">
+                <h3>Model X Plaid</h3>
+                <div class="vehicle-price">$99,990</div>
+                <p>High-performance electric SUV with falcon-wing doors.</p>
+            </div>
+
+            <div class="vehicle">
+                <h3>Model 3</h3>
+                <div class="vehicle-price">$38,990</div>
+                <p>Premium electric sedan designed for everyday driving.</p>
+            </div>
+
+            <div class="vehicle">
+                <h3>Model Y</h3>
+                <div class="vehicle-price">$44,990</div>
+                <p>Electric crossover focused on practicality and efficiency.</p>
+            </div>
+
+            <div class="vehicle">
+                <h3>Cybertruck</h3>
+                <div class="vehicle-price">$99,990</div>
+                <p>Electric pickup featuring a stainless-steel exterior.</p>
+            </div>
+
+            <div class="vehicle">
+                <h3>Tesla Semi</h3>
+                <div class="vehicle-price">$180,000</div>
+                <p>Class-8 electric truck designed for commercial transportation.</p>
+            </div>
+
+            <div class="vehicle">
+                <h3>Roadster</h3>
+                <div class="vehicle-price">$200,000</div>
+                <p>Next-generation Tesla performance vehicle project.</p>
+            </div>
+
+            <div class="vehicle">
+                <h3>Cybercab</h3>
+                <div class="vehicle-price">Future Product</div>
+                <p>Tesla's proposed autonomous vehicle concept.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ENERGY -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            Tesla Energy Products
+        </h2>
+
+        <div class="energy-card">
+            <h3>Powerwall 3</h3>
+            <p>
+                Residential battery storage designed for home energy
+                management and backup power.
+            </p>
+        </div>
+
+        <div class="energy-card">
+            <h3>Megapack</h3>
+            <p>
+                Large-scale battery storage designed for commercial
+                and utility applications.
+            </p>
+        </div>
+
+        <div class="energy-card">
+            <h3>Solar Roof</h3>
+            <p>
+                Solar roofing technology designed to combine roofing
+                materials with solar generation.
+            </p>
+        </div>
+
+        <div class="energy-card">
+            <h3>Supercharger Network</h3>
+            <p>
+                Tesla electric vehicle charging infrastructure.
+            </p>
+        </div>
+
+    </section>
+
+
+    <!-- ECOSYSTEM -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            Extended Musk Ecosystem
+        </h2>
+
+        <div class="ecosystem-grid">
+
+            <div class="ecosystem-card">
+                <h3>SpaceX</h3>
+                <p>
+                    Aerospace company developing launch vehicles,
+                    spacecraft and Starship.
+                </p>
+            </div>
+
+            <div class="ecosystem-card">
+                <h3>Starlink</h3>
+                <p>
+                    Satellite internet network providing broadband
+                    connectivity in supported markets.
+                </p>
+            </div>
+
+            <div class="ecosystem-card">
+                <h3>The Boring Company</h3>
+                <p>
+                    Infrastructure company focused on underground
+                    transportation systems.
+                </p>
+            </div>
+
+            <div class="ecosystem-card">
+                <h3>Optimus</h3>
+                <p>
+                    Tesla's humanoid robotics program.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- INNOVATIONS -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            Latest Innovations
+        </h2>
+
+        <div class="innovation-card">
+            <h3>Electric Vehicle Technology</h3>
+            <p>
+                Development of battery-electric vehicles,
+                vehicle software and charging technology.
+            </p>
+        </div>
+
+        <div class="innovation-card">
+            <h3>Energy Storage</h3>
+            <p>
+                Residential and utility-scale battery storage products.
+            </p>
+        </div>
+
+        <div class="innovation-card">
+            <h3>Autonomy & AI</h3>
+            <p>
+                Research and development in vehicle software,
+                driver assistance and artificial intelligence.
+            </p>
+        </div>
+
+        <div class="innovation-card">
+            <h3>Robotics</h3>
+            <p>
+                Tesla's ongoing work in humanoid robotics and AI.
+            </p>
+        </div>
+
+    </section>
+
+
+    <!-- TESLA STATISTICS -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            Tesla Statistics
+        </h2>
+
+        <div class="tesla-stats">
+
+            <div class="tesla-stat">
+                <strong>6</strong>
+                <span>Major Gigafactory Locations</span>
+            </div>
+
+            <div class="tesla-stat">
+                <strong>31.4 GWh</strong>
+                <span>Energy Deployment Reference</span>
+            </div>
+
+            <div class="tesla-stat">
+                <strong>TSLA</strong>
+                <span>NASDAQ Ticker</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- INVESTMENT -->
+
+    <section class="section">
+
+        <div class="investment-card">
+
+            <h2>
+                Invest in Tesla
+            </h2>
+
+            <p>
+                Select an investment option and enter an amount
+                to request further information. Investment values
+                can change and involve risk.
+            </p>
+
+            <div class="form-group">
+
+                <label>
+                    Investment Plan
+                </label>
+
+                <select id="investmentPlan">
+
+                    <option>Growth</option>
+                    <option>Premium</option>
+                    <option>Long-Term</option>
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    Amount (USD)
+                </label>
+
+                <input
+                    id="investmentAmount"
+                    type="number"
+                    placeholder="0.00"
+                    min="0"
+                >
+
+            </div>
+
+            <button
+                class="request-button"
+                onclick="requestInvestment()"
+            >
+                REQUEST INVESTMENT INFORMATION
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- POSITIONS -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            Your Tesla Positions
+        </h2>
+
+        <div class="empty-box">
+            No Tesla investments yet. Choose an option above to get started.
+        </div>
+
+    </section>
+
+
+    <!-- NEWS -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            Tesla News & Updates
+        </h2>
+
+        <div class="news-item">
+            <h3>
+                Tesla delivery and production updates
+            </h3>
+            <div class="news-meta">
+                Market News • Recent
+            </div>
+        </div>
+
+        <div class="news-item">
+            <h3>
+                Cybertruck production developments
+            </h3>
+            <div class="news-meta">
+                Automotive News • Recent
+            </div>
+        </div>
+
+        <div class="news-item">
+            <h3>
+                Tesla software and autonomous driving developments
+            </h3>
+            <div class="news-meta">
+                Technology News • Recent
+            </div>
+        </div>
+
+        <div class="news-item">
+            <h3>
+                Tesla Energy storage deployment updates
+            </h3>
+            <div class="news-meta">
+                Energy News • Recent
+            </div>
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+    © 2026 GLOBAL VAULT. All rights reserved.
+</footer>
+
+
+<!-- CHAT WINDOW -->
+
+<div
+    class="chat-window"
+    id="chatWindow"
+>
+
+    <div class="chat-header">
+
+        <strong>
+            Global Vault Support
+        </strong>
+
+        <span
+            class="chat-close"
+            onclick="toggleChat()"
+        >
+            ×
+        </span>
+
+    </div>
+
+    <div
+        class="chat-messages"
+        id="chatMessages"
+    >
+
+        <div class="chat-message support">
+            Hello. How can we help you?
+        </div>
+
+    </div>
+
+    <div class="chat-input-area">
+
+        <input
+            class="chat-input"
+            id="chatInput"
+            type="text"
+            placeholder="Type your message..."
+            onkeydown="chatEnter(event)"
+        >
+
+        <button
+            class="chat-send"
+            onclick="sendChat()"
+        >
+            ➤
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   MENU
+========================= */
+
+function openMenu(){
+
+    document
+        .getElementById("sidebar")
+        .classList.add("active");
+
+    document
+        .getElementById("overlay")
+        .classList.add("active");
+
+}
+
+function closeMenu(){
+
+    document
+        .getElementById("sidebar")
+        .classList.remove("active");
+
+    document
+        .getElementById("overlay")
+        .classList.remove("active");
+
+}
+
+
+/* =========================
+   MOVING TESLA CHART
+========================= */
+
+let teslaPrice = 250.19;
+
+let chartValues = [
+    55, 70, 62, 88, 76,
+    105, 92, 120, 108, 135,
+    119, 148, 132, 160, 145,
+    171, 155, 178, 165, 185
+];
+
+
+function drawChart(){
+
+    const line =
+        document.getElementById("chartLine");
+
+    const area =
+        document.getElementById("chartArea");
+
+    const width = 900;
+    const height = 230;
+
+    const step =
+        width / (chartValues.length - 1);
+
+    let path = "";
+
+    chartValues.forEach(
+        function(value,index){
+
+            const x =
+                index * step;
+
+            const y =
+                height - value;
+
+            if(index === 0){
+
+                path =
+                    "M " +
+                    x +
+                    " " +
+                    y;
+
+            }else{
+
+                path +=
+                    " L " +
+                    x +
+                    " " +
+                    y;
+
+            }
+
+        }
+    );
+
+
+    line.setAttribute(
+        "d",
+        path
+    );
+
+
+    area.setAttribute(
+        "d",
+        path +
+        " L 900 230 L 0 230 Z"
+    );
+
+}
+
+
+function moveMarket(){
+
+    /*
+       Small natural-looking movement
+    */
+
+    const movement =
+        (Math.random() - 0.47) * 2.2;
+
+    teslaPrice += movement;
+
+
+    if(teslaPrice < 238){
+        teslaPrice = 238;
+    }
+
+    if(teslaPrice > 270){
+        teslaPrice = 270;
+    }
+
+
+    const startingPrice = 250.19;
+
+    const change =
+        teslaPrice - startingPrice;
+
+    const percentage =
+        (change / startingPrice) * 100;
+
+
+    document
+        .getElementById("tslaPrice")
+        .textContent =
+        "$" +
+        teslaPrice.toFixed(2);
+
+
+    const sign =
+        change >= 0 ? "+" : "";
+
+
+    document
+        .getElementById("tslaChange")
+        .textContent =
+        sign +
+        change.toFixed(2) +
+        " (" +
+        sign +
+        percentage.toFixed(2) +
+        "%)";
+
+
+    /*
+       Move the chart
+    */
+
+    chartValues.shift();
+
+
+    const last =
+        chartValues[
+            chartValues.length - 1
+        ];
+
+
+    let next =
+        last +
+        ((Math.random() - 0.45) * 30);
+
+
+    if(next < 35){
+        next = 35;
+    }
+
+    if(next > 200){
+        next = 200;
+    }
+
+
+    chartValues.push(next);
+
+    drawChart();
+
+}
+
+
+/* START CHART */
+
+drawChart();
+
+
+/* MOVE EVERY 1.3 SECONDS */
+
+setInterval(
+    moveMarket,
+    1300
+);
+
+
+/* =========================
+   CHAT
+========================= */
+
+function toggleChat(){
+
+    document
+        .getElementById("chatWindow")
+        .classList.toggle("active");
+
+}
+
+
+function chatEnter(event){
+
+    if(event.key === "Enter"){
+
+        sendChat();
+
+    }
+
+}
+
+
+function sendChat(){
+
+    const input =
+        document.getElementById("chatInput");
+
+    const messages =
+        document.getElementById("chatMessages");
+
+
+    const text =
+        input.value.trim();
+
+
+    if(!text){
+        return;
+    }
+
+
+    const userBubble =
+        document.createElement("div");
+
+    userBubble.className =
+        "chat-message user";
+
+    userBubble.textContent =
+        text;
+
+
+    messages.appendChild(
+        userBubble
+    );
+
+
+    input.value = "";
+
+
+    messages.scrollTop =
+        messages.scrollHeight;
+
+
+    /*
+       Temporary response.
+       The real support inbox can be
+       connected to Supabase separately.
+    */
+
+    setTimeout(
+        function(){
+
+            const reply =
+                document.createElement("div");
+
+            reply.className =
+                "chat-message support";
+
+            reply.textContent =
+                "Thank you for contacting Global Vault Support. Your message has been received.";
+
+            messages.appendChild(
+                reply
+            );
+
+            messages.scrollTop =
+                messages.scrollHeight;
+
+        },
+        900
+    );
+
+}
+
+
+/* =========================
+   INVESTMENT REQUEST
+========================= */
+
+function requestInvestment(){
+
+    const amount =
+        document.getElementById(
+            "investmentAmount"
+        ).value;
+
+
+    if(!amount || Number(amount) <= 0){
+
+        alert(
+            "Please enter an amount."
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Your investment information request has been submitted."
+    );
+
+}
+
+</script>
+<!-- GLOBAL VAULT SUPPORT CHAT -->
+<div id="gvChatButton" onclick="openGVChat()">💬</div>
+
+<div id="gvChatBox">
+    <div class="gv-chat-header">
+        <strong>Global Vault Support</strong>
+        <button onclick="closeGVChat()">×</button>
+    </div>
+
+    <div class="gv-chat-body">
+        <input id="gvName" type="text" placeholder="Your name">
+        <input id="gvEmail" type="email" placeholder="Your email">
+        <textarea id="gvMessage" placeholder="How can we help?"></textarea>
+
+        <button onclick="sendGVMessage()">Send Message</button>
+
+        <p id="gvStatus"></p>
+    </div>
+</div>
+
+<style>
+#gvChatButton {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: #d88918;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    cursor: pointer;
+    z-index: 99999;
+    box-shadow: 0 0 18px rgba(216,137,24,.45);
+}
+
+#gvChatBox {
+    position: fixed;
+    right: 18px;
+    bottom: 82px;
+    width: 310px;
+    max-width: calc(100% - 36px);
+    background: #07111c;
+    border: 1px solid rgba(216,137,24,.45);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 35px rgba(0,0,0,.5);
+    z-index: 100000;
+    display: none;
+}
+
+.gv-chat-header {
+    background: #d88918;
+    color: white;
+    padding: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gv-chat-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.gv-chat-body {
+    padding: 14px;
+}
+
+.gv-chat-body input,
+.gv-chat-body textarea {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    padding: 11px;
+    background: #0b1825;
+    border: 1px solid rgba(216,137,24,.25);
+    border-radius: 7px;
+    color: white;
+    outline: none;
+}
+
+.gv-chat-body textarea {
+    height: 90px;
+    resize: none;
+}
+
+.gv-chat-body button {
+    width: 100%;
+    padding: 11px;
+    border: none;
+    border-radius: 7px;
+    background: #d88918;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#gvStatus {
+    text-align: center;
+    font-size: 12px;
+    margin: 8px 0 0;
+    color: #ffc857;
+}
+</style>
+
+<script>
+function openGVChat() {
+    document.getElementById("gvChatBox").style.display = "block";
+}
+
+function closeGVChat() {
+    document.getElementById("gvChatBox").style.display = "none";
+}
+
+async function sendGVMessage() {
+    const name = document.getElementById("gvName").value.trim();
+    const email = document.getElementById("gvEmail").value.trim();
+    const message = document.getElementById("gvMessage").value.trim();
+    const status = document.getElementById("gvStatus");
+
+    if (!name || !email || !message) {
+        status.textContent = "Please fill in all fields.";
+        return;
+    }
+
+    status.textContent = "Sending...";
+
+    try {
+        const response = await fetch(
+            "https://nudqvqvbdaszyfxnzgbt.supabase.co/functions/v1/send-support-message",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    message: message
+                })
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed");
+        }
+
+        status.textContent = "Message sent successfully.";
+
+        document.getElementById("gvName").value = "";
+        document.getElementById("gvEmail").value = "";
+        document.getElementById("gvMessage").value = "";
+
+    } catch (error) {
+        status.textContent = "Unable to send message.";
+    }
+}
+</script>
+</body>
+</html>

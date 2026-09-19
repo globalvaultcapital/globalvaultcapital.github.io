@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Global Vault - Profile Settings</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background:
+        radial-gradient(circle at 50% 30%, rgba(216, 137, 24, 0.08), transparent 45%),
+        radial-gradient(circle at 50% 100%, rgba(216, 137, 24, 0.12), transparent 45%),
+        #030303;
+    color: white;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+/* TOP BAR */
+
+.topbar {
+    height: 64px;
+    padding: 0 18px;
+    background: rgba(6, 17, 29, 0.94);
+    border-bottom: 1px solid rgba(216, 137, 24, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.menu-icon {
+    color: white;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+.top-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.notification {
+    color: #ffc857;
+    font-size: 23px;
+}
+
+.profile {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #d88918;
+    border: 1px solid #ffc857;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 14px rgba(216, 137, 24, 0.28);
+}
+
+.profile span {
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+/* MAIN */
+
+.profile-page {
+    padding: 34px 22px 90px;
+    max-width: 650px;
+    margin: auto;
+}
+
+.profile-page h1 {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #9b9b9b;
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 34px;
+}
+
+/* CARDS */
+
+.profile-card {
+    background: rgba(10, 20, 32, 0.92);
+    border: 1px solid rgba(216, 137, 24, 0.20);
+    border-radius: 16px;
+    padding: 28px 22px;
+    margin-bottom: 20px;
+    box-shadow:
+        0 0 18px rgba(216, 137, 24, 0.06),
+        inset 0 0 25px rgba(216, 137, 24, 0.02);
+}
+
+.profile-card h2 {
+    font-size: 21px;
+    margin-bottom: 28px;
+}
+
+/* FORM */
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 9px;
+}
+
+.form-group input {
+    width: 100%;
+    height: 58px;
+    padding: 0 18px;
+    border: 1px solid rgba(216, 137, 24, 0.16);
+    border-radius: 12px;
+    background: rgba(3, 3, 3, 0.72);
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: #d88918;
+    box-shadow: 0 0 12px rgba(216, 137, 24, 0.12);
+}
+
+.email-field {
+    color: #888 !important;
+}
+
+/* BUTTON */
+
+.save-button {
+    border: none;
+    border-radius: 9px;
+    padding: 15px 24px;
+    background: #d88918;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(216, 137, 24, 0.20);
+}
+
+.save-button:hover {
+    background: #e39a2b;
+}
+
+/* SECURITY */
+
+.security-row {
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(216, 137, 24, 0.10);
+}
+
+.security-row:last-child {
+    border-bottom: none;
+}
+
+.security-title {
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.security-text {
+    color: #999;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.reset-button {
+    margin-top: 14px;
+    padding: 13px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #292929;
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* PLAN */
+
+.plan-name {
+    color: #ffc857;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+/* CHAT */
+
+.chat-button {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #d88918;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow:
+        0 0 15px rgba(216, 137, 24, 0.35),
+        0 5px 18px rgba(0, 0, 0, 0.35);
+    z-index: 1000;
+}
+
+/* SUCCESS MESSAGE */
+
+.success-message {
+    position: fixed;
+    left: 50%;
+    bottom: 85px;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    max-width: 360px;
+    padding: 14px;
+    background: rgba(216, 137, 24, 0.96);
+    border: 1px solid #ffc857;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    display: none;
+    z-index: 2000;
+    box-shadow: 0 0 18px rgba(216, 137, 24, 0.30);
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="menu-icon">
+        
+    </div>
+
+    <div class="top-right">
+
+        <div class="notification">
+            ♧
+        </div>
+
+        <div class="profile">
+            <span id="profileLetter">U</span>
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="profile-page">
+
+    <h1>Profile Settings</h1>
+
+    <p class="subtitle">
+        Manage your account information and security.
+    </p>
+
+
+    <!-- PERSONAL INFORMATION -->
+
+    <section class="profile-card">
+
+        <h2>Personal Information</h2>
+
+        <div class="form-group">
+
+            <label>Email</label>
+
+            <input
+                type="email"
+                id="userEmail"
+                class="email-field"
+                placeholder="Your email address"
+                readonly
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Display Name</label>
+
+            <input
+                type="text"
+                id="displayName"
+                placeholder="Enter your display name"
+            >
+
+        </div>
+
+
+        <button
+            class="save-button"
+            onclick="saveProfile()"
+        >
+            Save Changes
+        </button>
+
+    </section>
+
+
+    <!-- SECURITY -->
+
+    <section class="profile-card">
+
+        <h2>Security</h2>
+
+        <div class="security-row">
+
+            <div class="security-title">
+                Password
+            </div>
+
+            <div class="security-text">
+                We'll email you a secure password reset link.
+            </div>
+
+            <button
+                class="reset-button"
+                onclick="resetPassword()"
+            >
+                Send Password Reset Code
+            </button>
+
+        </div>
+
+
+        <div class="security-row">
+
+            <div class="security-title">
+                Account Plan
+            </div>
+
+            <div class="plan-name">
+                Starter
+            </div>
+
+        </div>
+
+    </section>
+<div style="text-align: center; margin-top: 25px;">
+    <a
+        href="dashboard.html"
+        style="
+            color: #ffc857;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+        "
+    >
+        ← Back to Dashboard
+    </a>
+</div>
+</main>
+
+
+<!-- CHAT BUTTON -->
+
+<div class="chat-button">
+    <span>✦</span>
+</div>
+
+
+<!-- SUCCESS MESSAGE -->
+
+<div id="successMessage" class="success-message">
+    ✓ Profile updated successfully
+</div>
+
+
+<script>
+
+const savedName = localStorage.getItem("globalVaultName");
+
+if (savedName) {
+
+    document.getElementById("displayName").value = savedName;
+
+    document.getElementById("profileLetter").textContent =
+        savedName.charAt(0).toUpperCase();
+
+}
+
+
+/* SAVE PROFILE */
+
+function saveProfile() {
+
+    const name =
+        document.getElementById("displayName").value.trim();
+
+    if (!name) {
+
+        alert("Please enter your display name.");
+
+        return;
+    }
+
+    localStorage.setItem("globalVaultName", name);
+
+    document.getElementById("profileLetter").textContent =
+        name.charAt(0).toUpperCase();
+
+    const message =
+        document.getElementById("successMessage");
+
+    message.style.display = "block";
+
+    setTimeout(function() {
+
+        message.style.display = "none";
+
+    }, 3000);
+
+}
+
+
+/* PASSWORD RESET */
+
+function resetPassword() {
+
+    const email =
+        document.getElementById("userEmail").value;
+
+    if (!email) {
+
+        alert("Please log in first.");
+
+        return;
+    }
+
+    alert("A secure password reset link will be sent to your email.");
+
+}
+
+
+/* LOAD EMAIL IF SAVED */
+
+const savedEmail =
+    localStorage.getItem("globalVaultEmail");
+
+if (savedEmail) {
+
+    document.getElementById("userEmail").value =
+        savedEmail;
+
+}
+
+</script>
+<!-- GLOBAL VAULT SUPPORT CHAT -->
+<div id="gvChatButton" onclick="openGVChat()">💬</div>
+
+<div id="gvChatBox">
+    <div class="gv-chat-header">
+        <strong>Global Vault Support</strong>
+        <button onclick="closeGVChat()">×</button>
+    </div>
+
+    <div class="gv-chat-body">
+        <input id="gvName" type="text" placeholder="Your name">
+        <input id="gvEmail" type="email" placeholder="Your email">
+        <textarea id="gvMessage" placeholder="How can we help?"></textarea>
+
+        <button onclick="sendGVMessage()">Send Message</button>
+
+        <p id="gvStatus"></p>
+    </div>
+</div>
+
+<style>
+#gvChatButton {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: #d88918;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    cursor: pointer;
+    z-index: 99999;
+    box-shadow: 0 0 18px rgba(216,137,24,.45);
+}
+
+#gvChatBox {
+    position: fixed;
+    right: 18px;
+    bottom: 82px;
+    width: 310px;
+    max-width: calc(100% - 36px);
+    background: #07111c;
+    border: 1px solid rgba(216,137,24,.45);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 35px rgba(0,0,0,.5);
+    z-index: 100000;
+    display: none;
+}
+
+.gv-chat-header {
+    background: #d88918;
+    color: white;
+    padding: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gv-chat-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.gv-chat-body {
+    padding: 14px;
+}
+
+.gv-chat-body input,
+.gv-chat-body textarea {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    padding: 11px;
+    background: #0b1825;
+    border: 1px solid rgba(216,137,24,.25);
+    border-radius: 7px;
+    color: white;
+    outline: none;
+}
+
+.gv-chat-body textarea {
+    height: 90px;
+    resize: none;
+}
+
+.gv-chat-body button {
+    width: 100%;
+    padding: 11px;
+    border: none;
+    border-radius: 7px;
+    background: #d88918;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#gvStatus {
+    text-align: center;
+    font-size: 12px;
+    margin: 8px 0 0;
+    color: #ffc857;
+}
+</style>
+
+<script>
+function openGVChat() {
+    document.getElementById("gvChatBox").style.display = "block";
+}
+
+function closeGVChat() {
+    document.getElementById("gvChatBox").style.display = "none";
+}
+
+async function sendGVMessage() {
+    const name = document.getElementById("gvName").value.trim();
+    const email = document.getElementById("gvEmail").value.trim();
+    const message = document.getElementById("gvMessage").value.trim();
+    const status = document.getElementById("gvStatus");
+
+    if (!name || !email || !message) {
+        status.textContent = "Please fill in all fields.";
+        return;
+    }
+
+    status.textContent = "Sending...";
+
+    try {
+        const response = await fetch(
+            "https://nudqvqvbdaszyfxnzgbt.supabase.co/functions/v1/send-support-message",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    message: message
+                })
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed");
+        }
+
+        status.textContent = "Message sent successfully.";
+
+        document.getElementById("gvName").value = "";
+        document.getElementById("gvEmail").value = "";
+        document.getElementById("gvMessage").value = "";
+
+    } catch (error) {
+        status.textContent = "Unable to send message.";
+    }
+}
+</script>
+</body>
+</html>

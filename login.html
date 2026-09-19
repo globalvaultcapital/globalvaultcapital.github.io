@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Global Vault - Login</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at 50% 100%, rgba(216, 137, 24, 0.16), transparent 45%),
+                radial-gradient(circle at 0% 50%, rgba(216, 137, 24, 0.06), transparent 35%),
+                #030303;
+            color: white;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        .brand {
+            text-align: center;
+            font-size: 30px;
+            font-weight: 800;
+            margin-top: 100px;
+            letter-spacing: -1px;
+        }
+
+        .brand span {
+            color: #d88918;
+            text-shadow:
+                0 0 8px rgba(216, 137, 24, 0.45),
+                0 0 20px rgba(216, 137, 24, 0.18);
+        }
+
+        .auth-switch {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .auth-switch a {
+            border: 1px solid rgba(216, 137, 24, 0.25);
+            background: #080808;
+            color: #8d8d8d;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .auth-switch .active {
+            background: #d88918;
+            color: white;
+            border-color: #d88918;
+            box-shadow: 0 0 18px rgba(216, 137, 24, 0.35);
+        }
+
+        .login-card {
+            width: 90%;
+            max-width: 300px;
+            margin: 25px auto 20px;
+            padding: 18px;
+            box-sizing: border-box;
+            background: rgba(8, 8, 8, 0.96);
+            border: 1px solid rgba(216, 137, 24, 0.25);
+            border-radius: 10px;
+            box-shadow:
+                0 0 12px rgba(216, 137, 24, 0.18),
+                0 0 35px rgba(216, 137, 24, 0.08),
+                inset 0 0 25px rgba(216, 137, 24, 0.03);
+        }
+
+        .login-card h1 {
+            margin: 0 0 8px;
+            font-size: 22px;
+            line-height: 1.1;
+            text-align: center;
+        }
+
+        .intro {
+            margin: 0 0 18px;
+            color: #777;
+            font-size: 11px;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-top: 12px;
+            background: #080808;
+            border: 1px solid rgba(216, 137, 24, 0.25);
+            border-radius: 6px;
+            padding: 10px 12px;
+        }
+
+        .input-group span {
+            margin-right: 10px;
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        .input-group input {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: white;
+            font-size: 12px;
+        }
+
+        .input-group input::placeholder {
+            color: #777;
+        }
+
+        .login-button {
+            width: 100%;
+            margin-top: 15px;
+            padding: 11px;
+            border: none;
+            border-radius: 6px;
+            background: #d88918;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(216, 137, 24, 0.25);
+        }
+
+        .security-message {
+            margin-top: 12px;
+            text-align: center;
+            color: #777;
+            font-size: 10px;
+        }
+
+        .back-home {
+            display: block;
+            margin-top: 15px;
+            text-align: center;
+            color: #d88918;
+            text-decoration: none;
+            font-size: 11px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="brand">
+        GLOBAL <span>VAULT</span>
+    </div>
+
+    <div class="auth-switch">
+        <a href="login.html" class="active">LOGIN</a>
+        <a href="register.html">REGISTER</a>
+    </div>
+
+    <div class="login-card">
+
+        <h1>Welcome back</h1>
+
+        <p class="intro">
+            Log in to your secure Global Vault account.
+        </p>
+
+        <div class="input-group">
+            <span>✉️</span>
+            <input type="email" placeholder="Email Address">
+        </div>
+
+        <div class="input-group">
+            <span>🔒</span>
+            <input type="password" placeholder="Password">
+        </div>
+
+        <button class="login-button" onclick="loginUser()">
+    LOGIN
+</button>
+
+        <div class="security-message">
+            🔒 Your information is protected and secure.
+        </div>
+
+        <a href="index.html" class="back-home">
+            ← Back to Homepage
+        </a>
+
+    </div>
+<script>
+
+const SUPABASE_URL = "https://nudqvqvbdaszyfxnzgbt.supabase.co";
+const SUPABASE_KEY = "sb_publishable_H2gi3HuTBmhfopOdh5grqw_jZl5v0jc";
+
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+async function loginUser() {
+
+    const email = document.querySelector('input[type="email"]').value.trim();
+    const password = document.querySelector('input[type="password"]').value;
+
+    if (!email || !password) {
+        alert("Please enter your email and password.");
+        return;
+    }
+
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+    });
+
+    if (error) {
+        alert("Login error: " + error.message);
+        return;
+    }
+
+    localStorage.setItem("loginSuccess", "true");
+    window.location.href = "dashboard.html";
+}
+</script>
+<!-- GLOBAL VAULT SUPPORT CHAT -->
+<div id="gvChatButton" onclick="openGVChat()">💬</div>
+
+<div id="gvChatBox">
+    <div class="gv-chat-header">
+        <strong>Global Vault Support</strong>
+        <button onclick="closeGVChat()">×</button>
+    </div>
+
+    <div class="gv-chat-body">
+        <input id="gvName" type="text" placeholder="Your name">
+        <input id="gvEmail" type="email" placeholder="Your email">
+        <textarea id="gvMessage" placeholder="How can we help?"></textarea>
+
+        <button onclick="sendGVMessage()">Send Message</button>
+
+        <p id="gvStatus"></p>
+    </div>
+</div>
+
+<style>
+#gvChatButton {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: #d88918;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    cursor: pointer;
+    z-index: 99999;
+    box-shadow: 0 0 18px rgba(216,137,24,.45);
+}
+
+#gvChatBox {
+    position: fixed;
+    right: 18px;
+    bottom: 82px;
+    width: 310px;
+    max-width: calc(100% - 36px);
+    background: #07111c;
+    border: 1px solid rgba(216,137,24,.45);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 35px rgba(0,0,0,.5);
+    z-index: 100000;
+    display: none;
+}
+
+.gv-chat-header {
+    background: #d88918;
+    color: white;
+    padding: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gv-chat-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.gv-chat-body {
+    padding: 14px;
+}
+
+.gv-chat-body input,
+.gv-chat-body textarea {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    padding: 11px;
+    background: #0b1825;
+    border: 1px solid rgba(216,137,24,.25);
+    border-radius: 7px;
+    color: white;
+    outline: none;
+}
+
+.gv-chat-body textarea {
+    height: 90px;
+    resize: none;
+}
+
+.gv-chat-body button {
+    width: 100%;
+    padding: 11px;
+    border: none;
+    border-radius: 7px;
+    background: #d88918;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#gvStatus {
+    text-align: center;
+    font-size: 12px;
+    margin: 8px 0 0;
+    color: #ffc857;
+}
+</style>
+
+<script>
+function openGVChat() {
+    document.getElementById("gvChatBox").style.display = "block";
+}
+
+function closeGVChat() {
+    document.getElementById("gvChatBox").style.display = "none";
+}
+
+async function sendGVMessage() {
+    const name = document.getElementById("gvName").value.trim();
+    const email = document.getElementById("gvEmail").value.trim();
+    const message = document.getElementById("gvMessage").value.trim();
+    const status = document.getElementById("gvStatus");
+
+    if (!name || !email || !message) {
+        status.textContent = "Please fill in all fields.";
+        return;
+    }
+
+    status.textContent = "Sending...";
+
+    try {
+        const response = await fetch(
+            "https://nudqvqvbdaszyfxnzgbt.supabase.co/functions/v1/send-support-message",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    message: message
+                })
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed");
+        }
+
+        status.textContent = "Message sent successfully.";
+
+        document.getElementById("gvName").value = "";
+        document.getElementById("gvEmail").value = "";
+        document.getElementById("gvMessage").value = "";
+
+    } catch (error) {
+        status.textContent = "Unable to send message.";
+    }
+}
+</script>
+</body>
+</html>

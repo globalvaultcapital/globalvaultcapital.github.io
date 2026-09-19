@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Global Vault | Stock Investments</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#06111d;
+    color:#ffffff;
+    min-height:100vh;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header{
+    height:78px;
+    background:#050b12;
+    border-bottom:1px solid rgba(216,137,24,.18);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 22px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.menu-btn{
+    width:42px;
+    height:42px;
+    border:none;
+    background:transparent;
+    color:#ffc857;
+    font-size:29px;
+    cursor:pointer;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:22px;
+}
+
+.bell{
+    position:relative;
+    font-size:25px;
+    color:#ffffff;
+}
+
+.bell-dot{
+    position:absolute;
+    width:9px;
+    height:9px;
+    background:#ffc857;
+    border-radius:50%;
+    right:-2px;
+    top:1px;
+    box-shadow:0 0 10px rgba(255,200,87,.8);
+}
+
+.profile{
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    background:#d88918;
+    color:#ffffff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:19px;
+    font-weight:bold;
+    box-shadow:
+        0 0 10px rgba(216,137,24,.55),
+        0 0 25px rgba(216,137,24,.22);
+}
+
+/* =========================
+   SIDE MENU
+========================= */
+
+.side-menu{
+    position:fixed;
+    top:0;
+    left:-310px;
+    width:300px;
+    height:100vh;
+    background:#050b12;
+    border-right:1px solid rgba(216,137,24,.25);
+    z-index:2000;
+    padding:28px 18px;
+    transition:.3s ease;
+    box-shadow:10px 0 40px rgba(0,0,0,.5);
+}
+
+.side-menu.open{
+    left:0;
+}
+
+.menu-logo{
+    font-size:24px;
+    font-weight:800;
+    margin-bottom:30px;
+    padding:0 12px;
+}
+
+.menu-logo span{
+    color:#ffc857;
+}
+
+.close-menu{
+    position:absolute;
+    right:18px;
+    top:20px;
+    border:none;
+    background:none;
+    color:#ffc857;
+    font-size:27px;
+    cursor:pointer;
+}
+
+.menu-items{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.menu-item{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    color:#ffffff;
+    text-decoration:none;
+    padding:14px 14px;
+    border-radius:10px;
+    font-size:15px;
+    transition:.2s;
+}
+
+.menu-item:hover,
+.menu-item.active{
+    color:#ffc857;
+    background:rgba(216,137,24,.09);
+    box-shadow:
+        0 0 10px rgba(216,137,24,.10);
+}
+
+.menu-icon{
+    width:25px;
+    text-align:center;
+    color:#ffc857;
+    font-size:20px;
+}
+
+.menu-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:1500;
+    display:none;
+}
+
+.menu-overlay.show{
+    display:block;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+    max-width:900px;
+    margin:0 auto;
+    padding:42px 18px 90px;
+}
+
+.page-title{
+    font-size:36px;
+    margin-bottom:10px;
+}
+
+.page-subtitle{
+    color:#9ca6b1;
+    font-size:17px;
+    line-height:1.5;
+    margin-bottom:35px;
+}
+
+/* =========================
+   PORTFOLIO STATS
+========================= */
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-bottom:48px;
+}
+
+.stat-card{
+    background:#050b12;
+    border:1px solid rgba(216,137,24,.10);
+    border-radius:18px;
+    padding:25px;
+    box-shadow:
+        0 0 22px rgba(216,137,24,.035),
+        inset 0 0 25px rgba(216,137,24,.018);
+}
+
+.stat-label{
+    color:#9ca6b1;
+    font-size:15px;
+    margin-bottom:12px;
+}
+
+.stat-value{
+    font-size:34px;
+    font-weight:700;
+}
+
+.stat-value.gold{
+    color:#ffc857;
+    text-shadow:0 0 12px rgba(255,200,87,.35);
+}
+
+/* =========================
+   SECTION TITLES
+========================= */
+
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:25px;
+    margin-bottom:22px;
+}
+
+.section-icon{
+    color:#ffc857;
+    font-size:27px;
+    text-shadow:
+        0 0 8px rgba(255,200,87,.7);
+}
+
+/* =========================
+   STOCK CARDS
+========================= */
+
+.stock-list{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    margin-bottom:48px;
+}
+
+.stock-card{
+    background:#050b12;
+    border:1px solid rgba(216,137,24,.10);
+    border-radius:20px;
+    padding:27px;
+    position:relative;
+    box-shadow:
+        0 0 20px rgba(216,137,24,.025),
+        inset 0 0 25px rgba(216,137,24,.015);
+    transition:.25s;
+}
+
+.stock-card:hover{
+    border-color:rgba(216,137,24,.38);
+    box-shadow:
+        0 0 12px rgba(216,137,24,.18),
+        0 0 35px rgba(216,137,24,.08);
+}
+
+.stock-category{
+    color:#8e98a3;
+    font-size:13px;
+    margin-bottom:6px;
+}
+
+.stock-name{
+    font-size:22px;
+    font-weight:700;
+    margin-bottom:4px;
+}
+
+.stock-symbol{
+    color:#8e98a3;
+    font-size:14px;
+    margin-bottom:22px;
+}
+
+.stock-price-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.stock-price{
+    font-size:30px;
+    font-weight:700;
+}
+
+.stock-change{
+    color:#ffc857;
+    font-size:16px;
+    font-weight:600;
+}
+
+.stock-description{
+    color:#aab4bf;
+    line-height:1.65;
+    font-size:15px;
+    max-width:700px;
+}
+
+.star{
+    position:absolute;
+    right:24px;
+    top:24px;
+    color:#aab4bf;
+    font-size:24px;
+}
+
+/* =========================
+   GAINERS / LOSERS
+========================= */
+
+.market-box{
+    background:#050b12;
+    border:1px solid rgba(216,137,24,.10);
+    border-radius:18px;
+    padding:25px;
+    margin-bottom:25px;
+    box-shadow:
+        0 0 25px rgba(216,137,24,.025);
+}
+
+.market-heading{
+    color:#ffc857;
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:22px;
+}
+
+.market-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:11px 0;
+    border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.market-row:last-child{
+    border-bottom:none;
+}
+
+.market-symbol{
+    font-weight:600;
+}
+
+.market-positive{
+    color:#ffc857;
+}
+
+.market-negative{
+    color:#d7a0a0;
+}
+
+/* =========================
+   WATCHLIST
+========================= */
+
+.watchlist{
+    background:#050b12;
+    border:1px solid rgba(216,137,24,.10);
+    border-radius:18px;
+    padding:28px 25px;
+    margin-bottom:48px;
+}
+
+.empty-text{
+    color:#8f99a4;
+    font-size:15px;
+    margin-top:8px;
+}
+
+/* =========================
+   NEWS
+========================= */
+
+.news-box{
+    background:#050b12;
+    border:1px solid rgba(216,137,24,.10);
+    border-radius:20px;
+    padding:28px;
+    margin-bottom:48px;
+    box-shadow:
+        0 0 25px rgba(216,137,24,.025);
+}
+
+.news-item{
+    padding:20px 0;
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.news-item:last-child{
+    border-bottom:none;
+}
+
+.news-title{
+    font-size:17px;
+    font-weight:600;
+    margin-bottom:7px;
+}
+
+.news-meta{
+    color:#8f99a4;
+    font-size:13px;
+}
+
+/* =========================
+   ECONOMIC CALENDAR
+========================= */
+
+.calendar-box{
+    background:#050b12;
+    border:1px solid rgba(216,137,24,.10);
+    border-radius:20px;
+    padding:28px;
+    margin-bottom:48px;
+}
+
+.calendar-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 0;
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.calendar-row:last-child{
+    border-bottom:none;
+}
+
+.event-name{
+    font-size:16px;
+    font-weight:600;
+}
+
+.event-day{
+    color:#8f99a4;
+    margin-top:6px;
+}
+
+.priority{
+    padding:7px 13px;
+    border-radius:20px;
+    border:1px solid rgba(216,137,24,.25);
+    color:#ffc857;
+    font-size:13px;
+}
+
+/* =========================
+   EDUCATION
+========================= */
+
+.education-list{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.education-card{
+    background:#050b12;
+    border:1px solid rgba(216,137,24,.10);
+    border-radius:20px;
+    padding:30px;
+    box-shadow:
+        0 0 25px rgba(216,137,24,.025);
+}
+
+.education-card h3{
+    font-size:20px;
+    margin-bottom:16px;
+}
+
+.education-card p{
+    color:#aab4bf;
+    line-height:1.6;
+    margin-bottom:22px;
+}
+
+.read-more{
+    color:#ffc857;
+    text-decoration:none;
+    font-weight:600;
+    text-shadow:
+        0 0 8px rgba(255,200,87,.35);
+}
+
+/* =========================
+   GLOW EFFECT
+========================= */
+
+.glow{
+    text-shadow:
+        0 0 6px rgba(255,200,87,.55),
+        0 0 18px rgba(216,137,24,.25);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+    header{
+        height:70px;
+        padding:0 16px;
+    }
+
+    .main{
+        padding:38px 18px 80px;
+    }
+
+    .page-title{
+        font-size:34px;
+    }
+
+    .page-subtitle{
+        font-size:16px;
+    }
+
+    .stats-grid{
+        grid-template-columns:1fr 1fr;
+        gap:12px;
+    }
+
+    .stat-card{
+        padding:21px 18px;
+    }
+
+    .stat-value{
+        font-size:28px;
+    }
+
+    .stock-card{
+        padding:25px 22px;
+    }
+
+    .stock-price{
+        font-size:28px;
+    }
+
+    .section-title{
+        font-size:23px;
+    }
+
+    .market-box,
+    .watchlist,
+    .news-box,
+    .calendar-box,
+    .education-card{
+        padding:24px 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     SIDE MENU
+========================= -->
+
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+<div class="side-menu" id="sideMenu">
+
+    <button class="close-menu" onclick="closeMenu()">×</button>
+
+    <div class="menu-logo">
+        GLOBAL <span>VAULT</span>
+    </div>
+
+    <div class="menu-items">
+
+        <a href="dashboard.html" class="menu-item">
+            <span class="menu-icon">▦</span>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="deposit.html" class="menu-item">
+            <span class="menu-icon">↓</span>
+            <span>Deposit Funds</span>
+        </a>
+
+        <a href="withdraw.html" class="menu-item">
+            <span class="menu-icon">↑</span>
+            <span>Withdraw Funds</span>
+        </a>
+
+        <a href="trading.html" class="menu-item">
+            <span class="menu-icon">⌁</span>
+            <span>Trade Center</span>
+        </a>
+
+        <a href="tesla.html" class="menu-item">
+            <span class="menu-icon">⚡</span>
+            <span>Tesla Investment</span>
+        </a>
+
+        <a href="transactions.html" class="menu-item">
+            <span class="menu-icon">◷</span>
+            <span>Transactions</span>
+        </a>
+
+        <a href="investment.html" class="menu-item">
+            <span class="menu-icon">◇</span>
+            <span>Investment Plans</span>
+        </a>
+
+        <a href="stocks.html" class="menu-item active">
+            <span class="menu-icon">▥</span>
+            <span>Stock Investments</span>
+        </a>
+
+        <a href="notifications.html" class="menu-item">
+            <span class="menu-icon">♧</span>
+            <span>Notifications</span>
+        </a>
+
+        <a href="profile.html" class="menu-item">
+            <span class="menu-icon">♟</span>
+            <span>Profile Settings</span>
+        </a>
+
+    </div>
+</div>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+    <button class="menu-btn" onclick="openMenu()">
+        ☰
+    </button>
+
+    <div class="header-right">
+
+        <div class="bell">
+            ♧
+            <span class="bell-dot"></span>
+        </div>
+
+        <div class="profile" id="profileLetter">
+            R
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     MAIN CONTENT
+========================= -->
+
+<main class="main">
+
+    <h1 class="page-title">
+        Stock Investments
+    </h1>
+
+    <p class="page-subtitle">
+        Professional market tracking and educational resources.
+    </p>
+
+
+    <!-- PORTFOLIO -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-label">
+                Portfolio Balance
+            </div>
+
+            <div class="stat-value">
+                $0.00
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">
+                Watchlist
+            </div>
+
+            <div class="stat-value">
+                0
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">
+                Day P/L
+            </div>
+
+            <div class="stat-value gold">
+                +$0.00
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">
+                Tracked
+            </div>
+
+            <div class="stat-value">
+                6
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- TECHNOLOGY -->
+
+    <h2 class="section-title">
+        <span class="section-icon">▥</span>
+        Technology Companies
+    </h2>
+
+    <div class="stock-list">
+
+        <!-- TESLA -->
+
+        <div class="stock-card">
+
+            <span class="star">☆</span>
+
+            <div class="stock-category">
+                EV / Energy
+            </div>
+
+            <div class="stock-name">
+                Tesla Inc.
+            </div>
+
+            <div class="stock-symbol">
+                TSLA
+            </div>
+
+            <div class="stock-price-row">
+
+                <div class="stock-price">
+                    $248.50
+                </div>
+
+                <div class="stock-change">
+                    ↗ +3.2%
+                </div>
+
+            </div>
+
+            <p class="stock-description">
+                Designs and manufactures electric vehicles,
+                energy storage, and solar products.
+            </p>
+
+        </div>
+
+
+        <!-- SPACEX -->
+
+        <div class="stock-card">
+
+            <span class="star">☆</span>
+
+            <div class="stock-category">
+                Aerospace
+            </div>
+
+            <div class="stock-name">
+                SpaceX (Private)
+            </div>
+
+            <div class="stock-symbol">
+                SPACEX
+            </div>
+
+            <div class="stock-price-row">
+
+                <div class="stock-price">
+                    Private
+                </div>
+
+            </div>
+
+            <p class="stock-description">
+                Aerospace company focused on launch systems,
+                spacecraft, and satellite connectivity.
+            </p>
+
+        </div>
+
+
+        <!-- NVIDIA -->
+
+        <div class="stock-card">
+
+            <span class="star">☆</span>
+
+            <div class="stock-category">
+                Semiconductors
+            </div>
+
+            <div class="stock-name">
+                NVIDIA Corp.
+            </div>
+
+            <div class="stock-symbol">
+                NVDA
+            </div>
+
+            <div class="stock-price-row">
+
+                <div class="stock-price">
+                    $1,245.20
+                </div>
+
+                <div class="stock-change">
+                    ↗ +5.4%
+                </div>
+
+            </div>
+
+            <p class="stock-description">
+                Leader in GPUs and AI accelerators powering
+                data centers worldwide.
+            </p>
+
+        </div>
+
+
+        <!-- MICROSOFT -->
+
+        <div class="stock-card">
+
+            <span class="star">☆</span>
+
+            <div class="stock-category">
+                Technology
+            </div>
+
+            <div class="stock-name">
+                Microsoft Corp.
+            </div>
+
+            <div class="stock-symbol">
+                MSFT
+            </div>
+
+            <div class="stock-price-row">
+
+                <div class="stock-price">
+                    $425.30
+                </div>
+
+                <div class="stock-change">
+                    ↗ +0.8%
+                </div>
+
+            </div>
+
+            <p class="stock-description">
+                Cloud, productivity software, gaming, and
+                artificial intelligence services.
+            </p>
+
+        </div>
+
+
+        <!-- GOOGLE -->
+
+        <div class="stock-card">
+
+            <span class="star">☆</span>
+
+            <div class="stock-category">
+                Internet
+            </div>
+
+            <div class="stock-name">
+                Alphabet Inc.
+            </div>
+
+            <div class="stock-symbol">
+                GOOGL
+            </div>
+
+            <div class="stock-price-row">
+
+                <div class="stock-price">
+                    $175.80
+                </div>
+
+                <div class="stock-change">
+                    ↘ -0.4%
+                </div>
+
+            </div>
+
+            <p class="stock-description">
+                Parent company of Google, YouTube,
+                and other technology businesses.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- TOP GAINERS -->
+
+    <div class="market-box">
+
+        <div class="market-heading">
+            ↗ Top Gainers
+        </div>
+
+        <div class="market-row">
+            <span class="market-symbol">NVDA</span>
+            <span class="market-positive">+5.4%</span>
+        </div>
+
+        <div class="market-row">
+            <span class="market-symbol">TSLA</span>
+            <span class="market-positive">+3.2%</span>
+        </div>
+
+        <div class="market-row">
+            <span class="market-symbol">AMD</span>
+            <span class="market-positive">+2.8%</span>
+        </div>
+
+    </div>
+
+
+    <!-- TOP LOSERS -->
+
+    <div class="market-box">
+
+        <div class="market-heading">
+            ↘ Top Losers
+        </div>
+
+        <div class="market-row">
+            <span class="market-symbol">META</span>
+            <span class="market-negative">-2.1%</span>
+        </div>
+
+        <div class="market-row">
+            <span class="market-symbol">GOOGL</span>
+            <span class="market-negative">-0.4%</span>
+        </div>
+
+        <div class="market-row">
+            <span class="market-symbol">NFLX</span>
+            <span class="market-negative">-1.7%</span>
+        </div>
+
+    </div>
+
+
+    <!-- WATCHLIST -->
+
+    <div class="watchlist">
+
+        <h2 class="section-title">
+            <span class="section-icon">☆</span>
+            Your Watchlist
+        </h2>
+
+        <p class="empty-text">
+            Add stocks from the cards above.
+        </p>
+
+    </div>
+
+
+    <!-- MARKET NEWS -->
+
+    <h2 class="section-title">
+        <span class="section-icon">▤</span>
+        Market News
+    </h2>
+
+    <div class="news-box">
+
+        <div class="news-item">
+
+            <div class="news-title">
+                Fed signals rate cuts as inflation eases
+            </div>
+
+            <div class="news-meta">
+                Bloomberg · 2h ago
+            </div>
+
+        </div>
+
+        <div class="news-item">
+
+            <div class="news-title">
+                Tesla beats Q3 delivery expectations
+            </div>
+
+            <div class="news-meta">
+                Reuters · 4h ago
+            </div>
+
+        </div>
+
+        <div class="news-item">
+
+            <div class="news-title">
+                NVIDIA unveils next-generation AI chip architecture
+            </div>
+
+            <div class="news-meta">
+                TechCrunch · 6h ago
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ECONOMIC CALENDAR -->
+
+    <h2 class="section-title">
+        <span class="section-icon">▣</span>
+        Economic Calendar
+    </h2>
+
+    <div class="calendar-box">
+
+        <div class="calendar-row">
+
+            <div>
+                <div class="event-name">
+                    FOMC Minutes
+                </div>
+
+                <div class="event-day">
+                    Mon
+                </div>
+            </div>
+
+            <span class="priority">
+                High
+            </span>
+
+        </div>
+
+
+        <div class="calendar-row">
+
+            <div>
+                <div class="event-name">
+                    CPI Release
+                </div>
+
+                <div class="event-day">
+                    Tue
+                </div>
+            </div>
+
+            <span class="priority">
+                High
+            </span>
+
+        </div>
+
+
+        <div class="calendar-row">
+
+            <div>
+                <div class="event-name">
+                    Earnings: AAPL
+                </div>
+
+                <div class="event-day">
+                    Wed
+                </div>
+            </div>
+
+            <span class="priority">
+                Medium
+            </span>
+
+        </div>
+
+
+        <div class="calendar-row">
+
+            <div>
+                <div class="event-name">
+                    Jobless Claims
+                </div>
+
+                <div class="event-day">
+                    Thu
+                </div>
+            </div>
+
+            <span class="priority">
+                Low
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- EDUCATION -->
+
+    <h2 class="section-title">
+        <span class="section-icon">▣</span>
+        Investment Education
+    </h2>
+
+    <div class="education-list">
+
+        <div class="education-card">
+
+            <h3>
+                Understanding Stock Markets
+            </h3>
+
+            <p>
+                Learn how exchanges, orders, and price
+                discovery actually work.
+            </p>
+
+            <a href="#" class="read-more">
+                Read more →
+            </a>
+
+        </div>
+
+
+        <div class="education-card">
+
+            <h3>
+                Risk Management
+            </h3>
+
+            <p>
+                Position sizing, stop losses, and protecting
+                your downside.
+            </p>
+
+            <a href="#" class="read-more">
+                Read more →
+            </a>
+
+        </div>
+
+
+        <div class="education-card">
+
+            <h3>
+                Diversification Strategies
+            </h3>
+
+            <p>
+                Spreading risk across sectors, geographies,
+                and asset classes.
+            </p>
+
+            <a href="#" class="read-more">
+                Read more →
+            </a>
+
+        </div>
+
+
+        <div class="education-card">
+
+            <h3>
+                Long-Term Investing Principles
+            </h3>
+
+            <p>
+                Compounding, patience, and ignoring
+                short-term market noise.
+            </p>
+
+            <a href="#" class="read-more">
+                Read more →
+            </a>
+
+        </div>
+
+    </div>
+
+    <p style="
+        color:#697582;
+        font-size:12px;
+        text-align:center;
+        margin-top:40px;
+    ">
+    
+    </p>
+
+</main>
+
+
+<script>
+
+/* =========================
+   SIDE MENU
+========================= */
+
+function openMenu(){
+
+    document.getElementById("sideMenu").classList.add("open");
+
+    document.getElementById("menuOverlay").classList.add("show");
+
+}
+
+function closeMenu(){
+
+    document.getElementById("sideMenu").classList.remove("open");
+
+    document.getElementById("menuOverlay").classList.remove("show");
+
+}
+
+
+/* =========================
+   PROFILE LETTER
+========================= */
+
+const savedName =
+    localStorage.getItem("globalVaultName");
+
+if(savedName){
+
+    document.getElementById("profileLetter")
+        .textContent =
+        savedName.charAt(0).toUpperCase();
+
+}
+
+</script>
+
+</body>
+</html>

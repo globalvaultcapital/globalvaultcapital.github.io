@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Global Vault - Dashboard</title>
+</head>
+
+<body>
+    <!-- GLOBAL VAULT SIDE MENU -->
+
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+<div class="side-menu" id="sideMenu">
+
+    <div class="menu-header">
+        <div class="menu-logo">
+            Global <span>Vault</span>
+        </div>
+
+        <button class="menu-close" onclick="closeMenu()">×</button>
+    </div>
+
+    <div class="menu-items">
+
+        <a href="dashboard.html" class="menu-item active">
+            <span class="menu-icon">⊞</span>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="deposit.html" class="menu-item">
+    <span class="menu-icon">↓</span>
+    <span>Deposit Funds</span>
+</a>
+
+        <a href="withdraw.html" class="menu-item">
+    <span class="menu-icon">↑</span>
+    <span>Withdraw Funds</span>
+</a>
+<a href="trading.html" class="menu-item">
+    <span class="menu-icon">↝</span>
+    <span>Trade Center</span>
+</a>
+
+<a href="tesla.html" class="menu-item">
+    <span class="menu-icon">⚡</span>
+    <span>Tesla Investment</span>
+</a>
+
+<a href="transactions.html" class="menu-item">
+    <span class="menu-icon">◷</span>
+    <span>Transactions</span>
+</a>
+         <a href="investment-plan.html" class="menu-item">
+    <span class="menu-icon">◇</span>
+    <span>Investment Plans</span>
+</a>
+
+        <a href="stocks.html" class="menu-item">
+    <span class="menu-icon">▥</span>
+    <span>Stock Investments</span>
+</a>
+
+        <a href="notifications.html" class="menu-item">
+    <span class="menu-icon">♧</span>
+    <span>Notifications</span>
+</a>
+
+        <a href="profile.html" class="menu-item">
+            <span class="menu-icon">♙</span>
+            <span>Profile Settings</span>
+        </a>
+
+        <a href="support.html" class="menu-item">
+            <span class="menu-icon">◎</span>
+            <span>Support Center</span>
+        </a>
+
+    </div>
+
+    <div class="menu-logout">
+        <a href="login.html" class="menu-item">
+            <span class="menu-icon">⇥</span>
+            <span>Logout</span>
+        </a>
+    </div>
+
+</div>
+<header class="topbar">
+
+    <div class="menu-icon" onclick="openMenu()">
+    ☰
+</div>
+
+    <div
+    class="profile.html"
+    onclick="window.location.href='profile.html'"
+>
+    <span id="profileLetter">U</span>
+</div>
+    </div>
+
+</header>
+
+<main class="dashboard">
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background:
+            radial-gradient(circle at 50% 30%, rgba(216, 137, 24, 0.08), transparent 45%),
+            #030303;
+        color: white;
+        font-family: Arial, sans-serif;
+        min-height: 100vh;
+    }
+
+    .topbar {
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 28px;
+        border-bottom: 1px solid rgba(216, 137, 24, 0.12);
+        background: rgba(3, 3, 3, 0.92);
+    }
+
+    .menu-icon {
+        font-size: 30px;
+        color: #aaa;
+    }
+
+    .top-right {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+    }
+
+    .notification {
+        font-size: 28px;
+        color: #aaa;
+    }
+
+    .profile {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: #d88918;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .dashboard {
+        padding: 35px 28px;
+    }
+
+    .dashboard-label {
+        color: #d88918;
+        font-size: 14px;
+        letter-spacing: 2px;
+        margin-bottom: 18px;
+    }
+
+    .dashboard h1 {
+        font-size: 42px;
+        line-height: 1.15;
+        margin-bottom: 25px;
+    }
+
+    .dashboard h1 span {
+        color: #d88918;
+    }
+
+    .account-status {
+        color: #999;
+        font-size: 18px;
+    }
+
+    .account-status strong {
+        color: white;
+    }.balance-card {
+    background: rgba(10, 20, 32, 0.95);
+    border: 1px solid rgba(216, 137, 24, 0.22);
+    border-radius: 10px;
+    padding: 18px;
+    margin: 12px 0;
+    box-shadow:
+        0 0 12px rgba(216, 137, 24, 0.08),
+        inset 0 0 18px rgba(216, 137, 24, 0.02);
+}
+
+.card-title {
+    color: #8f9aa5;
+    font-size: 13px;
+    margin-bottom: 9px;
+}
+
+.card-value {
+    color: #ffc857;
+    font-size: 24px;
+    font-weight: 700;
+}.recent-activities {
+    background: rgba(10, 20, 32, 0.95);
+    border: 1px solid rgba(216, 137, 24, 0.22);
+    border-radius: 10px;
+    padding: 18px;
+    margin: 18px 0;
+    box-shadow:
+        0 0 12px rgba(216, 137, 24, 0.08),
+        inset 0 0 18px rgba(216, 137, 24, 0.02);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.section-header h2 {
+    margin: 0;
+    color: white;
+    font-size: 18px;
+}
+
+.section-header a {
+    color: #ffc857;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.no-activity {
+    text-align: center;
+    padding: 20px 10px 10px;
+}
+
+.activity-icon {
+    width: 42px;
+    height: 42px;
+    margin: 0 auto 14px;
+    border: 1px solid rgba(216, 137, 24, 0.35);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffc857;
+    font-size: 20px;
+}
+
+.no-activity p {
+    margin: 0 0 7px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.no-activity span {
+    color: #8f9aa5;
+    font-size: 12px;
+}.quick-actions {
+    background: rgba(10, 20, 32, 0.95);
+    border: 1px solid rgba(216, 137, 24, 0.22);
+    border-radius: 10px;
+    padding: 18px;
+    margin: 18px 0;
+    box-shadow:
+        0 0 12px rgba(216, 137, 24, 0.08),
+        inset 0 0 18px rgba(216, 137, 24, 0.02);
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.action-button {
+    min-height: 75px;
+    padding: 14px 10px;
+    box-sizing: border-box;
+    border: 1px solid rgba(216, 137, 24, 0.20);
+    border-radius: 8px;
+    background: rgba(6, 17, 29, 0.85);
+    color: white;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.action-button:hover {
+    border-color: #d88918;
+    box-shadow: 0 0 12px rgba(216, 137, 24, 0.18);
+}
+
+.action-icon {
+    color: #ffc857;
+    font-size: 21px;
+    line-height: 1;
+}.chat-button {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #d88918;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow:
+        0 0 15px rgba(216, 137, 24, 0.35),
+        0 5px 18px rgba(0, 0, 0, 0.35);
+    z-index: 1000;
+}
+
+.chat-button span {
+    color: #ffffff;
+    line-height: 1;
+}.topbar {
+    height: 64px;
+    padding: 0 18px;
+    background: rgba(6, 17, 29, 0.94);
+    border-bottom: 1px solid rgba(216, 137, 24, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.menu-icon {
+    color: #ffffff;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.top-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.notification {
+    color: #ffc857;
+    font-size: 21px;
+    line-height: 1;
+}
+
+.profile {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #d88918;
+    border: 1px solid #ffc857;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 12px rgba(216, 137, 24, 0.25);
+}
+
+.profile span {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+}.dashboard-label {
+    color: #ffc857;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}.dashboard h1 {
+    margin: 0 0 12px;
+    color: #ffffff;
+    font-size: 25px;
+    line-height: 1.3;
+    font-weight: 700;
+}
+
+.dashboard h1 span {
+    color: #d88918;
+}.account-status {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 7px 12px;
+    border: 1px solid rgba(216, 137, 24, 0.28);
+    border-radius: 20px;
+    background: rgba(216, 137, 24, 0.07);
+    color: #8f9aa5;
+    font-size: 11px;
+}
+
+.account-status strong {
+    color: #ffc857;
+    font-weight: 700;
+}.balance-card {
+    background: rgba(10, 20, 32, 0.95);
+    border: 1px solid rgba(216, 137, 24, 0.22);
+    border-radius: 10px;
+    padding: 16px;
+    margin: 10px 0;
+    box-shadow:
+        0 0 12px rgba(216, 137, 24, 0.08),
+        inset 0 0 18px rgba(216, 137, 24, 0.02);
+}
+
+.card-title {
+    color: #8f9aa5;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.card-value {
+    color: #ffc857;
+    font-size: 23px;
+    font-weight: 700;
+}.recent-activities {
+    background: rgba(10, 20, 32, 0.95);
+    border: 1px solid rgba(216, 137, 24, 0.22);
+    border-radius: 10px;
+    padding: 18px;
+    margin: 20px 0;
+    box-shadow:
+        0 0 12px rgba(216, 137, 24, 0.08),
+        inset 0 0 18px rgba(216, 137, 24, 0.02);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+
+.section-header h2 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.section-header a {
+    color: #ffc857;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.no-activity {
+    text-align: center;
+    padding: 22px 8px 12px;
+}
+
+.activity-icon {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto 13px;
+    border: 1px solid rgba(216, 137, 24, 0.30);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffc857;
+    font-size: 19px;
+    background: rgba(216, 137, 24, 0.05);
+}
+
+.no-activity p {
+    margin: 0 0 6px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.no-activity span {
+    color: #8f9aa5;
+    font-size: 11px;
+    line-height: 1.5;
+}.quick-actions {
+    background: rgba(10, 20, 32, 0.95);
+    border: 1px solid rgba(216, 137, 24, 0.22);
+    border-radius: 10px;
+    padding: 18px;
+    margin: 20px 0;
+    box-shadow:
+        0 0 12px rgba(216, 137, 24, 0.08),
+        inset 0 0 18px rgba(216, 137, 24, 0.02);
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.action-button {
+    min-height: 78px;
+    padding: 14px 8px;
+    box-sizing: border-box;
+    border: 1px solid rgba(216, 137, 24, 0.20);
+    border-radius: 8px;
+    background: rgba(6, 17, 29, 0.85);
+    color: #ffffff;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    transition: 0.2s ease;
+}
+
+.action-button:hover {
+    border-color: #d88918;
+    box-shadow: 0 0 12px rgba(216, 137, 24, 0.18);
+}
+
+.action-icon {
+    color: #ffc857;
+    font-size: 21px;
+    line-height: 1;
+}.success-popup {
+    position: fixed;
+    left: 50%;
+    bottom: 25px;
+    transform: translateX(-50%);
+    width: calc(100% - 36px);
+    max-width: 360px;
+    padding: 14px 16px;
+    box-sizing: border-box;
+    background: rgba(216, 137, 24, 0.96);
+    border: 1px solid #ffc857;
+    border-radius: 10px;
+    display: none;
+    align-items: center;
+    gap: 12px;
+    box-shadow:
+        0 0 18px rgba(216, 137, 24, 0.35),
+        0 8px 25px rgba(0, 0, 0, 0.35);
+    z-index: 2000;
+}
+
+.success-icon {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    border: 1px solid #ffc857;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.success-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.success-content strong {
+    color: #ffffff;
+    font-size: 13px;
+}
+
+.success-content span {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 11px;
+}/* =========================
+   GLOBAL VAULT SIDE MENU
+   ========================= */
+
+.menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.72);
+    z-index: 9998;
+    display: none;
+}
+
+.menu-overlay.show {
+    display: block;
+}
+
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 430px;
+    max-width: 88%;
+    height: 100vh;
+    background: #050607;
+    border-right: 1px solid rgba(216, 137, 24, 0.12);
+    z-index: 9999;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.side-menu.open {
+    transform: translateX(0);
+}
+
+/* GLOBAL Vault */
+.menu-header {
+    height: 105px;
+    padding: 28px 38px 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.menu-logo {
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #ffffff;
+}
+
+.menu-logo span {
+    color: #ffc857;
+}
+
+.menu-close {
+    width: 42px;
+    height: 42px;
+    border: none;
+    background: transparent;
+    color: #ffffff;
+    font-size: 34px;
+    font-weight: 300;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+}
+
+/* MENU ITEMS */
+.menu-item {
+    width: 100%;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 25px;
+    margin-bottom: 3px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.menu-item:hover {
+    color: #ffc857;
+    background: rgba(216, 137, 24, 0.07);
+}
+
+.menu-item.active {
+    color: #ffc857;
+    background: rgba(216, 137, 24, 0.10);
+    border: 1px solid rgba(216, 137, 24, 0.55);
+    box-shadow:
+        0 0 12px rgba(216, 137, 24, 0.20),
+        inset 0 0 18px rgba(216, 137, 24, 0.05);
+}
+
+.menu-icon {
+    width: 28px;
+    min-width: 28px;
+    text-align: center;
+    font-size: 25px;
+    color: #b8b8b8;
+}
+
+.menu-item.active .menu-icon {
+    color: #ffc857;
+}
+
+/* LOGOUT */
+.menu-logout {
+    padding: 25px 22px 35px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.menu-logout .menu-item {
+    margin-bottom: 0;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+
+    .side-menu {
+        width: 460px;
+        max-width: 86%;
+    }
+
+    .menu-header {
+        padding: 27px 35px 18px;
+    }
+
+    .menu-items {
+        padding: 28px 20px;
+    }
+
+    .menu-item {
+    min-height: 48px;
+    padding: 10px 25px;
+    gap: 15px;
+    font-size: 16px;
+}
+
+    .menu-logout {
+        padding: 20px 20px 28px;
+    }
+}
+</style>
+    <div class="dashboard-label">
+    TRADING DASHBOARD
+</div>
+
+    <h1>
+        Welcome back, <span id="userName">User</span>
+    </h1>
+
+    <div class="account-status">
+        🛡️ &nbsp; Account status: <strong>Active</strong>
+    </div>
+    <div class="balance-card">
+    <div class="card-title">Account Balance</div>
+    <div class="card-value">$0.00</div>
+</div>
+
+<div class="balance-card">
+    <div class="card-title">BTC Balance</div>
+    <div class="card-value">0 BTC</div>
+</div>
+
+<div class="balance-card">
+    <div class="card-title">ETH Balance</div>
+    <div class="card-value">0 ETH</div>
+</div>
+
+<div class="balance-card">
+    <div class="card-title">USDT Balance</div>
+    <div class="card-value">0 USDT</div>
+</div>
+
+<div class="balance-card">
+    <div class="card-title">Total Deposits</div>
+    <div class="card-value">$0.00</div>
+</div>
+
+<div class="balance-card">
+    <div class="card-title">Total Withdrawals</div>
+    <div class="card-value">$0.00</div>
+</div>
+
+<div class="balance-card">
+    <div class="card-title">Active Trades</div>
+    <div class="card-value">0</div>
+</div>
+
+<div class="balance-card">
+    <div class="card-title">Profit / Loss</div>
+    <div class="card-value">+$0.00</div>
+</div>
+<div class="recent-activities">
+    <div class="section-header">
+        <h2>Recent Activities</h2>
+        <a href="#">View all</a>
+    </div>
+
+    <div class="no-activity">
+        <div class="activity-icon">↻</div>
+
+        <p>No activity yet.</p>
+
+        <span>Make your first deposit to get started.</span>
+    </div>
+</div>
+<div class="quick-actions">
+
+    <div class="section-header">
+        <h2>Quick Actions</h2>
+    </div>
+
+    <div class="action-grid">
+
+        <a href="deposit.html" class="action-button">
+            <span class="action-icon">＋</span>
+            <span>Deposit Funds</span>
+        </a>
+
+        <a href="withdraw.html" class="action-button">
+            <span class="action-icon">↓</span>
+            <span>Withdraw</span>
+        </a>
+
+        <a href="trading.html" class="action-button">
+            <span class="action-icon">↗</span>
+            <span>Open New Trade</span>
+        </a>
+
+        <a href="stocks.html" class="action-button">
+            <span class="action-icon">◈</span>
+            <span>Explore Stocks</span>
+        </a>
+
+    </div>
+
+</div>
+</main>
+<script>
+const savedName = localStorage.getItem("globalVaultName");
+
+if (savedName) {
+    document.getElementById("userName").textContent = savedName;
+    document.getElementById("profileLetter").textContent = savedName.charAt(0).toUpperCase();
+}
+</script>
+<div class="chat-button">
+    <span>✦</span>
+</div>
+<div id="successPopup" class="success-popup">
+    <div class="success-icon">✓</div>
+
+    <div class="success-content">
+        <strong>Login successful</strong>
+        <span>Welcome to Global Vault.</span>
+    </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const popup = document.getElementById("successPopup");
+
+    if (localStorage.getItem("loginSuccess") === "true" && popup) {
+
+        popup.style.display = "flex";
+
+        setTimeout(function () {
+            popup.style.display = "none";
+        }, 4000);
+
+        localStorage.removeItem("loginSuccess");
+    }
+
+});
+</script>
+<script>
+function openMenu() {
+    document.getElementById("sideMenu").classList.add("open");
+    document.getElementById("menuOverlay").classList.add("show");
+}
+
+function closeMenu() {
+    document.getElementById("sideMenu").classList.remove("open");
+    document.getElementById("menuOverlay").classList.remove("show");
+}
+</script>
+<!-- GLOBAL VAULT SUPPORT CHAT -->
+<div id="gvChatButton" onclick="openGVChat()">💬</div>
+
+<div id="gvChatBox">
+    <div class="gv-chat-header">
+        <strong>Global Vault Support</strong>
+        <button onclick="closeGVChat()">×</button>
+    </div>
+
+    <div class="gv-chat-body">
+        <input id="gvName" type="text" placeholder="Your name">
+        <input id="gvEmail" type="email" placeholder="Your email">
+        <textarea id="gvMessage" placeholder="How can we help?"></textarea>
+
+        <button onclick="sendGVMessage()">Send Message</button>
+
+        <p id="gvStatus"></p>
+    </div>
+</div>
+
+<style>
+#gvChatButton {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: #d88918;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    cursor: pointer;
+    z-index: 99999;
+    box-shadow: 0 0 18px rgba(216,137,24,.45);
+}
+
+#gvChatBox {
+    position: fixed;
+    right: 18px;
+    bottom: 82px;
+    width: 310px;
+    max-width: calc(100% - 36px);
+    background: #07111c;
+    border: 1px solid rgba(216,137,24,.45);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 35px rgba(0,0,0,.5);
+    z-index: 100000;
+    display: none;
+}
+
+.gv-chat-header {
+    background: #d88918;
+    color: white;
+    padding: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gv-chat-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.gv-chat-body {
+    padding: 14px;
+}
+
+.gv-chat-body input,
+.gv-chat-body textarea {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    padding: 11px;
+    background: #0b1825;
+    border: 1px solid rgba(216,137,24,.25);
+    border-radius: 7px;
+    color: white;
+    outline: none;
+}
+
+.gv-chat-body textarea {
+    height: 90px;
+    resize: none;
+}
+
+.gv-chat-body button {
+    width: 100%;
+    padding: 11px;
+    border: none;
+    border-radius: 7px;
+    background: #d88918;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#gvStatus {
+    text-align: center;
+    font-size: 12px;
+    margin: 8px 0 0;
+    color: #ffc857;
+}
+</style>
+
+<script>
+function openGVChat() {
+    document.getElementById("gvChatBox").style.display = "block";
+}
+
+function closeGVChat() {
+    document.getElementById("gvChatBox").style.display = "none";
+}
+
+async function sendGVMessage() {
+    const name = document.getElementById("gvName").value.trim();
+    const email = document.getElementById("gvEmail").value.trim();
+    const message = document.getElementById("gvMessage").value.trim();
+    const status = document.getElementById("gvStatus");
+
+    if (!name || !email || !message) {
+        status.textContent = "Please fill in all fields.";
+        return;
+    }
+
+    status.textContent = "Sending...";
+
+    try {
+        const response = await fetch(
+            "https://nudqvqvbdaszyfxnzgbt.supabase.co/functions/v1/send-support-message",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    message: message
+                })
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed");
+        }
+
+        status.textContent = "Message sent successfully.";
+
+        document.getElementById("gvName").value = "";
+        document.getElementById("gvEmail").value = "";
+        document.getElementById("gvMessage").value = "";
+
+    } catch (error) {
+        status.textContent = "Unable to send message.";
+    }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Global Vault | Notifications</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #06111d;
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+/* HEADER */
+header {
+    height: 75px;
+    background: #050b12;
+    border-bottom: 1px solid rgba(216,137,24,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 22px;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.logo span {
+    color: #ffc857;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.bell {
+    position: relative;
+    font-size: 25px;
+    color: #ffffff;
+}
+
+.bell-dot {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    background: #ffc857;
+    border-radius: 50%;
+}
+
+.profile {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #d88918;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* PAGE */
+.notifications-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px 100px;
+}
+
+.page-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 45px;
+}
+
+.page-title {
+    font-size: 38px;
+    margin-bottom: 12px;
+}
+
+.page-subtitle {
+    color: #aab4bf;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+/* MARK READ BUTTON */
+.mark-read {
+    background: #171f29;
+    border: 1px solid rgba(216,137,24,0.18);
+    color: #ffffff;
+    padding: 13px 18px;
+    border-radius: 12px;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.mark-read:hover {
+    border-color: #d88918;
+    color: #ffc857;
+}
+
+/* NOTIFICATION CARD */
+.notification-card {
+    background: #050b12;
+    border: 1px solid rgba(216,137,24,0.12);
+    border-radius: 22px;
+    min-height: 380px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    box-shadow:
+        0 0 30px rgba(216,137,24,0.03),
+        inset 0 0 30px rgba(216,137,24,0.02);
+}
+
+.empty-icon {
+    font-size: 65px;
+    margin-bottom: 22px;
+    opacity: 0.85;
+}
+
+.empty-title {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.empty-text {
+    color: #8995a2;
+    font-size: 15px;
+}
+
+/* BACK BUTTON */
+.back-dashboard {
+    display: inline-block;
+    margin-top: 30px;
+    color: #ffc857;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.back-dashboard:hover {
+    text-decoration: underline;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+
+    header {
+        height: 68px;
+        padding: 0 18px;
+    }
+
+    .logo {
+        font-size: 18px;
+    }
+
+    .notifications-page {
+        padding: 35px 18px 80px;
+    }
+
+    .page-top {
+        flex-direction: column;
+        margin-bottom: 35px;
+    }
+
+    .page-title {
+        font-size: 34px;
+    }
+
+    .page-subtitle {
+        font-size: 17px;
+    }
+
+    .mark-read {
+        align-self: flex-start;
+    }
+
+    .notification-card {
+        min-height: 360px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        GLOBAL <span>VAULT</span>
+    </div>
+
+    <div class="header-right">
+
+        <div class="bell">
+            ♧
+            <span class="bell-dot"></span>
+        </div>
+
+        <div class="profile" id="profileLetter">
+            R
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="notifications-page">
+
+    <div class="page-top">
+
+        <div>
+            <h1 class="page-title">
+                Notifications
+            </h1>
+
+            <p class="page-subtitle">
+                Updates about your account, deposits, and trades.
+            </p>
+        </div>
+
+        <button class="mark-read" onclick="markAllRead()">
+            ✓✓ &nbsp; Mark all read
+        </button>
+
+    </div>
+
+
+    <div class="notification-card" id="notificationCard">
+
+        <div>
+
+            <div class="empty-icon">
+                ♧
+            </div>
+
+            <div class="empty-title">
+                No notifications yet.
+            </div>
+
+            <div class="empty-text">
+                New account and transaction updates will appear here.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <a href="dashboard.html" class="back-dashboard">
+        ← Back to Dashboard
+    </a>
+
+</main>
+
+
+<script>
+
+/* LOAD USER NAME */
+const savedName = localStorage.getItem("globalVaultName");
+
+if (savedName) {
+    document.getElementById("profileLetter").textContent =
+        savedName.charAt(0).toUpperCase();
+}
+
+
+/* MARK ALL READ */
+function markAllRead() {
+
+    alert("All notifications marked as read.");
+
+}
+
+</script>
+<!-- GLOBAL VAULT SUPPORT CHAT -->
+<div id="gvChatButton" onclick="openGVChat()">💬</div>
+
+<div id="gvChatBox">
+    <div class="gv-chat-header">
+        <strong>Global Vault Support</strong>
+        <button onclick="closeGVChat()">×</button>
+    </div>
+
+    <div class="gv-chat-body">
+        <input id="gvName" type="text" placeholder="Your name">
+        <input id="gvEmail" type="email" placeholder="Your email">
+        <textarea id="gvMessage" placeholder="How can we help?"></textarea>
+
+        <button onclick="sendGVMessage()">Send Message</button>
+
+        <p id="gvStatus"></p>
+    </div>
+</div>
+
+<style>
+#gvChatButton {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: #d88918;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    cursor: pointer;
+    z-index: 99999;
+    box-shadow: 0 0 18px rgba(216,137,24,.45);
+}
+
+#gvChatBox {
+    position: fixed;
+    right: 18px;
+    bottom: 82px;
+    width: 310px;
+    max-width: calc(100% - 36px);
+    background: #07111c;
+    border: 1px solid rgba(216,137,24,.45);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 35px rgba(0,0,0,.5);
+    z-index: 100000;
+    display: none;
+}
+
+.gv-chat-header {
+    background: #d88918;
+    color: white;
+    padding: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gv-chat-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.gv-chat-body {
+    padding: 14px;
+}
+
+.gv-chat-body input,
+.gv-chat-body textarea {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    padding: 11px;
+    background: #0b1825;
+    border: 1px solid rgba(216,137,24,.25);
+    border-radius: 7px;
+    color: white;
+    outline: none;
+}
+
+.gv-chat-body textarea {
+    height: 90px;
+    resize: none;
+}
+
+.gv-chat-body button {
+    width: 100%;
+    padding: 11px;
+    border: none;
+    border-radius: 7px;
+    background: #d88918;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#gvStatus {
+    text-align: center;
+    font-size: 12px;
+    margin: 8px 0 0;
+    color: #ffc857;
+}
+</style>
+
+<script>
+function openGVChat() {
+    document.getElementById("gvChatBox").style.display = "block";
+}
+
+function closeGVChat() {
+    document.getElementById("gvChatBox").style.display = "none";
+}
+
+async function sendGVMessage() {
+    const name = document.getElementById("gvName").value.trim();
+    const email = document.getElementById("gvEmail").value.trim();
+    const message = document.getElementById("gvMessage").value.trim();
+    const status = document.getElementById("gvStatus");
+
+    if (!name || !email || !message) {
+        status.textContent = "Please fill in all fields.";
+        return;
+    }
+
+    status.textContent = "Sending...";
+
+    try {
+        const response = await fetch(
+            "https://nudqvqvbdaszyfxnzgbt.supabase.co/functions/v1/send-support-message",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    message: message
+                })
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed");
+        }
+
+        status.textContent = "Message sent successfully.";
+
+        document.getElementById("gvName").value = "";
+        document.getElementById("gvEmail").value = "";
+        document.getElementById("gvMessage").value = "";
+
+    } catch (error) {
+        status.textContent = "Unable to send message.";
+    }
+}
+</script>
+</body>
+</html>
