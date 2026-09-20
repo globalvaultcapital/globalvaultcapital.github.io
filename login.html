@@ -210,21 +210,35 @@ async function loginUser() {
     const password = document.querySelector('input[type="password"]').value;
 
     if (!email || !password) {
-        alert("Please enter your email and password.");
+
+        showGVPopup(
+            "Login Required",
+            "Please enter your email address and password.",
+            "!"
+        );
+
         return;
     }
 
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-    });
+    const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
 
     if (error) {
-        alert("Login error: " + error.message);
+
+        showGVPopup(
+            "Login Failed",
+            "The email address or password you entered is incorrect. Please check your details and try again.",
+            "!"
+        );
+
         return;
     }
 
     localStorage.setItem("loginSuccess", "true");
+
     window.location.href = "dashboard.html";
 }
 async function forgotPassword(event) {
