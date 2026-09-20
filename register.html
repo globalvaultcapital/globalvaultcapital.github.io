@@ -202,15 +202,15 @@ async function registerUser() {
 }
 
     const { error } = await supabaseClient.auth.signUp({
-        email: email,
-        password: password,
+    email: email,
+    password: password,
+    options: {
         emailRedirectTo: "https://globalvaultcapital.github.io/login.html",
-        options: {
-            data: {
-                display_name: name
-            }
+        data: {
+            display_name: name
         }
-    });
+    }
+});
 
     if (error) {
     showGVPopup(
