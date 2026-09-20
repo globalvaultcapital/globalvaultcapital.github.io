@@ -247,7 +247,7 @@ async function forgotPassword(event) {
     const { error } = await supabaseClient.auth.resetPasswordForEmail(
         email,
         {
-            redirectTo: "http://localhost:3000/reset-password.html"
+            redirectTo: "https://globalvaultcapital.github.io/reset-password.html"
         }
     );
 
