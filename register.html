@@ -38,7 +38,7 @@
     width: fit-content;
     max-width: 300px;
     margin: 25px auto 20px;
-    padding: px 18px;
+    padding: 18px;
     box-sizing: border-box;
     background: rgba(8, 8, 8, 0.96);
     border: 1px solid rgba(216, 137, 24, 0.25);
@@ -137,7 +137,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Vault - Register</title>
-</style>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>    
 </head>
 <body>
@@ -243,6 +243,12 @@ async function registerUser() {
         <p id="gvPopupMessage">
             Please check your email and click the confirmation link.
         </p>
+
+        <button onclick="closeGVPopup()">OK</button>
+
+    </div>
+</div>
+
 <!-- GLOBAL VAULT SUPPORT CHAT -->
 <div id="gvChatButton" onclick="openGVChat()">💬</div>
 
