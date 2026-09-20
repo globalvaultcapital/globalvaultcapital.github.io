@@ -150,7 +150,27 @@
 </head>
 
 <body>
+<div id="gvPopup" class="gv-popup-overlay">
 
+    <div class="gv-popup-card">
+
+        <div id="gvPopupIcon" class="gv-popup-icon">
+            ✓
+        </div>
+
+        <h2 id="gvPopupTitle">Password Reset Email Sent!</h2>
+
+        <p id="gvPopupMessage">
+            Please check your email inbox.
+        </p>
+
+        <button onclick="closeGVPopup()">
+            OK
+        </button>
+
+    </div>
+
+</div>
     <div class="brand">
         GLOBAL <span>VAULT</span>
     </div>
@@ -172,6 +192,9 @@
             <span>✉️</span>
             <input type="email" placeholder="Email Address">
         </div>
+        <a href="#" class="forgot-password" onclick="forgotPassword(event)">
+    Forgot Password?
+</a>
 
         <div class="input-group">
             <span>🔒</span>
@@ -334,6 +357,145 @@ async function loginUser() {
     font-size: 12px;
     margin: 8px 0 0;
     color: #ffc857;
+}.forgot-password {
+    display: block;
+    margin-top: 10px;
+    text-align: right;
+    color: #d88918;
+    font-size: 11px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}.forgot-password {
+    display: block;
+    margin-top: 10px;
+    text-align: right;
+    color: #d88918;
+    font-size: 11px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* POP-UP OVERLAY */
+
+.gv-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 999999;
+    padding: 20px;
+}
+
+/* POP-UP CARD */
+
+.gv-popup-card {
+    width: 100%;
+    max-width: 340px;
+
+    background: #080808;
+
+    border: 1px solid rgba(216, 137, 24, 0.45);
+
+    border-radius: 12px;
+
+    padding: 30px 22px;
+
+    text-align: center;
+
+    box-shadow:
+        0 0 20px rgba(216, 137, 24, 0.20),
+        0 10px 40px rgba(0, 0, 0, 0.6);
+
+    animation: gvPopupShow 0.25s ease;
+}
+
+.gv-popup-icon {
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 18px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(216, 137, 24, 0.12);
+
+    border: 1px solid rgba(216, 137, 24, 0.40);
+
+    color: #d88918;
+
+    font-size: 28px;
+}
+
+.gv-popup-card h2 {
+    margin: 0 0 12px;
+
+    font-size: 20px;
+
+    color: white;
+}
+
+.gv-popup-card p {
+    margin: 0 auto 22px;
+
+    color: #999;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+.gv-popup-card button {
+    width: 100%;
+
+    padding: 12px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #d88918;
+
+    color: white;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow: 0 0 15px rgba(216, 137, 24, 0.25);
+}
+
+.gv-popup-card button:hover {
+    background: #e49727;
+}
+
+@keyframes gvPopupShow {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 </style>
 
@@ -388,6 +550,74 @@ async function sendGVMessage() {
     } catch (error) {
         status.textContent = "Unable to send message.";
     }
+async function forgotPassword(event) {
+
+    event.preventDefault();
+
+    const email = document.querySelector('input[type="email"]').value.trim();
+
+    if (!email) {
+
+        showGVPopup(
+            "Email Required",
+            "Please enter your email address first.",
+            "✉"
+        );
+
+        return;
+    }
+
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(
+        email,
+        {
+            redirectTo: "http://localhost:3000/reset-password.html"
+        }
+    );
+
+    if (error) {
+
+        showGVPopup(
+            "Unable to Send",
+            error.message,
+            "!"
+        );
+
+        return;
+    }
+
+    showGVPopup(
+        "Password Reset Email Sent!",
+        "Please check your email inbox and spam folder.",
+        "✓"
+    );
+
+}
+
+    if (error) {
+        alert("Unable to send password reset email: " + error.message);
+        return;
+    }
+
+    alert(
+        "Password reset email sent. " +
+        "Please check your email inbox and spam folder."
+    );
+}function showGVPopup(title, message, icon = "✓") {
+
+    document.getElementById("gvPopupTitle").textContent = title;
+
+    document.getElementById("gvPopupMessage").textContent = message;
+
+    document.getElementById("gvPopupIcon").textContent = icon;
+
+    document.getElementById("gvPopup").style.display = "flex";
+
+}
+
+function closeGVPopup() {
+
+    document.getElementById("gvPopup").style.display = "none";
+
 }
 </script>
 </body>
