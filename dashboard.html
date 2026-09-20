@@ -1053,7 +1053,19 @@ async function sendGVMessage() {
     } catch (error) {
         status.textContent = "Unable to send message.";
     }
+}async function loadUserName() {
+    const { data: { user } } = await supabaseClient.auth.getUser();
+
+    if (user) {
+        const name = user.user_metadata?.display_name;
+
+        if (name) {
+            document.getElementById("userName").textContent = name;
+        }
+    }
 }
+
+loadUserName();
 </script>
 </body>
 </html>
