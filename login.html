@@ -150,27 +150,7 @@
 </head>
 
 <body>
-<div id="gvPopup" class="gv-popup-overlay">
 
-    <div class="gv-popup-card">
-
-        <div id="gvPopupIcon" class="gv-popup-icon">
-            ✓
-        </div>
-
-        <h2 id="gvPopupTitle">Password Reset Email Sent!</h2>
-
-        <p id="gvPopupMessage">
-            Please check your email inbox.
-        </p>
-
-        <button onclick="closeGVPopup()">
-            OK
-        </button>
-
-    </div>
-
-</div>
     <div class="brand">
         GLOBAL <span>VAULT</span>
     </div>
@@ -192,14 +172,14 @@
             <span>✉️</span>
             <input type="email" placeholder="Email Address">
         </div>
-        <a href="#" class="forgot-password" onclick="forgotPassword(event)">
-    Forgot Password?
-</a>
 
         <div class="input-group">
             <span>🔒</span>
             <input type="password" placeholder="Password">
         </div>
+        <a href="#" class="forgot-password" onclick="forgotPassword(event)">
+    Forgot Password?
+</a>
 
         <button class="login-button" onclick="loginUser()">
     LOGIN
@@ -247,6 +227,48 @@ async function loginUser() {
     localStorage.setItem("loginSuccess", "true");
     window.location.href = "dashboard.html";
 }
+async function forgotPassword(event) {
+
+    event.preventDefault();
+
+    const email = document.querySelector('input[type="email"]').value.trim();
+
+    if (!email) {
+
+        showGVPopup(
+            "Email Required",
+            "Please enter your email address first.",
+            "✉"
+        );
+
+        return;
+    }
+
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(
+        email,
+        {
+            redirectTo: "http://localhost:3000/reset-password.html"
+        }
+    );
+
+    if (error) {
+
+        showGVPopup(
+            "Unable to Send",
+            error.message,
+            "!"
+        );
+
+        return;
+    }
+
+    showGVPopup(
+        "Password Reset Email Sent!",
+        "Please check your email inbox and spam folder.",
+        "✓"
+    );
+
+}
 </script>
 <!-- GLOBAL VAULT SUPPORT CHAT -->
 <div id="gvChatButton" onclick="openGVChat()">💬</div>
@@ -266,6 +288,30 @@ async function loginUser() {
 
         <p id="gvStatus"></p>
     </div>
+</div>
+<!-- FORGOT PASSWORD POPUP -->
+<div id="gvPopup" class="gv-popup-overlay">
+
+    <div class="gv-popup-card">
+
+        <div id="gvPopupIcon" class="gv-popup-icon">
+            ✓
+        </div>
+
+        <h2 id="gvPopupTitle">
+            Password Reset Email Sent!
+        </h2>
+
+        <p id="gvPopupMessage">
+            Please check your email inbox and spam folder.
+        </p>
+
+        <button onclick="closeGVPopup()">
+            OK
+        </button>
+
+    </div>
+
 </div>
 
 <style>
@@ -357,18 +403,6 @@ async function loginUser() {
     font-size: 12px;
     margin: 8px 0 0;
     color: #ffc857;
-}.forgot-password {
-    display: block;
-    margin-top: 10px;
-    text-align: right;
-    color: #d88918;
-    font-size: 11px;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.forgot-password:hover {
-    text-decoration: underline;
 }.forgot-password {
     display: block;
     margin-top: 10px;
@@ -550,58 +584,6 @@ async function sendGVMessage() {
     } catch (error) {
         status.textContent = "Unable to send message.";
     }
-async function forgotPassword(event) {
-
-    event.preventDefault();
-
-    const email = document.querySelector('input[type="email"]').value.trim();
-
-    if (!email) {
-
-        showGVPopup(
-            "Email Required",
-            "Please enter your email address first.",
-            "✉"
-        );
-
-        return;
-    }
-
-    const { error } = await supabaseClient.auth.resetPasswordForEmail(
-        email,
-        {
-            redirectTo: "http://localhost:3000/reset-password.html"
-        }
-    );
-
-    if (error) {
-
-        showGVPopup(
-            "Unable to Send",
-            error.message,
-            "!"
-        );
-
-        return;
-    }
-
-    showGVPopup(
-        "Password Reset Email Sent!",
-        "Please check your email inbox and spam folder.",
-        "✓"
-    );
-
-}
-
-    if (error) {
-        alert("Unable to send password reset email: " + error.message);
-        return;
-    }
-
-    alert(
-        "Password reset email sent. " +
-        "Please check your email inbox and spam folder."
-    );
 }function showGVPopup(title, message, icon = "✓") {
 
     document.getElementById("gvPopupTitle").textContent = title;
