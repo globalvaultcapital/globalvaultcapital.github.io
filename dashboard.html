@@ -852,12 +852,15 @@ const supabaseClient = supabase.createClient(
     SUPABASE_KEY
 );
 </script>
+<script>
 const savedName = localStorage.getItem("globalVaultName");
 
 if (savedName) {
     document.getElementById("userName").textContent = savedName;
-    document.getElementById("profileLetter").textContent = savedName.charAt(0).toUpperCase();
+    document.getElementById("profileLetter").textContent =
+        savedName.charAt(0).toUpperCase();
 }
+</script>
 </script>
 <div class="chat-button">
     <span>✦</span>
