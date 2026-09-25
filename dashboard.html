@@ -765,7 +765,7 @@
 
 <div class="balance-card">
     <div class="card-title">BTC Balance</div>
-    <div class="card-value">0 BTC</div>
+    <div class="card-value" id="btcBalance">0 BTC</div>
 </div>
 
 <div class="balance-card">
@@ -775,7 +775,7 @@
 
 <div class="balance-card">
     <div class="card-title">USDT Balance</div>
-    <div class="card-value">0 USDT</div>
+    <div class="card-value" id="usdtBalance">0 USDT</div>
 </div>
 
 <div class="balance-card">
@@ -866,7 +866,7 @@ async function loadAccountBalance() {
 
     const { data, error } = await supabaseClient
         .from("public_balances")
-        .select("balance")
+        .select("balance, btc_balance, usdt_balance")
         .eq("user_id", user.id)
         .single();
 
@@ -876,9 +876,15 @@ async function loadAccountBalance() {
     }
 
     if (data) {
-        document.getElementById("accountBalance").textContent =
-            "$" + Number(data.balance).toFixed(2);
-    }
+    document.getElementById("accountBalance").textContent =
+        "$" + Number(data.balance).toFixed(2);
+
+    document.getElementById("btcBalance").textContent =
+        Number(data.btc_balance).toFixed(5) + " BTC";
+
+    document.getElementById("usdtBalance").textContent =
+        Number(data.usdt_balance).toFixed(2) + " USDT";
+}
 }
 
 loadAccountBalance();
