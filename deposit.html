@@ -624,6 +624,17 @@
     margin: 0;
 }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://nudqvqvbdaszyfxnzgbt.supabase.co";
+const SUPABASE_KEY = "sb_publishable_H2gi3HuTBmhfopOdh5grqw_jZl5v0jc";
+
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+</script>
 </head>
 
 <body>
@@ -833,19 +844,19 @@
 
             <div class="stat-card pending">
                 <div class="stat-icon">◷</div>
-                <div class="stat-number">0</div>
+                <div class="stat-number" id="pendingCount">0</div>
                 <div class="stat-label">Pending</div>
             </div>
 
             <div class="stat-card approved">
                 <div class="stat-icon">⌄</div>
-                <div class="stat-number">0</div>
+                <div class="stat-number" id="approvedCount">0</div>
                 <div class="stat-label">Approved</div>
             </div>
 
             <div class="stat-card rejected">
                 <div class="stat-icon">×</div>
-                <div class="stat-number">0</div>
+                <div class="stat-number" id="rejectedCount">0</div>
                 <div class="stat-label">Rejected</div>
             </div>
 
@@ -1235,17 +1246,90 @@ async function sendGVMessage() {
 }
 </script>
 <script>
-function submitDeposit() {
+async function submitDeposit() {
+
     const message = document.getElementById("depositMessage");
 
-    if (message) {
-        message.style.display = "none";
+    const selects = document.querySelectorAll(".field select");
+    const amountInput = document.querySelector('input[type="number"]');
 
-        setTimeout(function () {
-            message.style.display = "block";
-        }, 2000);
+    const currency = selects[0].value;
+    const network = selects[1].value;
+    const amount = Number(amountInput.value);
+
+    if (!amount || amount <= 0) {
+        alert("Please enter a deposit amount.");
+        return;
     }
+
+    const {
+        data: { user },
+        error: userError
+    } = await supabaseClient.auth.getUser();
+
+    if (userError || !user) {
+        alert("Please log in again before submitting a deposit.");
+        return;
+    }
+
+    const { error } = await supabaseClient
+        .from("deposits")
+        .insert({
+            user_id: user.id,
+            currency: currency,
+            network: network,
+            amount_usd: amount,
+            status: "pending"
+        });
+
+    if (error) {
+        console.error("Deposit error:", error);
+        alert("Unable to submit deposit. Please try again.");
+        return;
+    }
+
+    if (message) {
+        message.textContent =
+            "Deposit submitted — waiting for approval.";
+        message.style.display = "block";
+    }
+
+    amountInput.value = "";
+
+    loadDepositStats();
 }
+
+
+async function loadDepositStats() {
+
+    const {
+        data: { user }
+    } = await supabaseClient.auth.getUser();
+
+    if (!user) {
+        return;
+    }
+
+    const { data, error } = await supabaseClient
+        .from("deposits")
+        .select("status")
+        .eq("user_id", user.id);
+
+    if (error) {
+        console.error("Deposit stats error:", error);
+        return;
+    }
+
+    const pending = data.filter(d => d.status === "pending").length;
+    const approved = data.filter(d => d.status === "approved").length;
+    const rejected = data.filter(d => d.status === "rejected").length;
+
+    document.getElementById("pendingCount").textContent = pending;
+    document.getElementById("approvedCount").textContent = approved;
+    document.getElementById("rejectedCount").textContent = rejected;
+}
+
+loadDepositStats();
 </script>
 </body>
 </html>
